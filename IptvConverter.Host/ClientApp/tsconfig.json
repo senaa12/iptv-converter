@@ -1,0 +1,28 @@
+{
+    "compilerOptions": {
+        // "plugins": [
+        //     {
+        //         "name": "typescript-tslint-plugin",
+        //         "configFile": "./tslint.json",
+        //         "alwaysShowRuleFailuresAsWarnings": false,
+        //         "exclude": [ "node_modules" ]
+        //     }
+        // ],
+        "sourceMap": true,
+        "strictNullChecks": true,
+        "module": "ES2020",
+        "jsx": "react",
+        "allowJs": true,
+        "allowSyntheticDefaultImports": true,
+        "noImplicitAny": false,
+        "moduleResolution": "Node",
+        "baseUrl": "./",
+        "esModuleInterop": true,
+    },
+    "include": [
+        "./src"
+    ],
+    "exclude": [
+        "node_modules"
+    ]
+}

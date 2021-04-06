@@ -1,0 +1,84 @@
+@function px-to-rem($value, $root-value: 14px) {
+  @return 1rem * ($value / $root-value);
+}
+
+/// Converts a px input unit into a responsive 'Viewport Height' unit. It defaults to that (input) value on Full HD resolution (1920*1080)
+/// It keeps 1/3 of the input unit fixed (as a lower limit) and adds 2/3 equivalent 'vh'
+/// @param $value - input value in px, e.g. input exact value from mockup specs 
+/// @example - margin: px-to-vh(30px) 0;
+@function px-to-vh($value, $root-value: 1080px) {
+$vh: $root-value * 0.01;
+$min-value: ($value / 3);
+$responsive-part: ($value - $min-value);
+
+@return Calc(#{$min-value} + 1vh * ($responsive-part / $vh));
+}
+
+/// Converts a px input unit into a responsive 'Viewport Width' unit. It defaults to that (input) value on Full HD resolution (1920*1080)
+/// It keeps 1/3 of the input unit fixed (as a lower limit) and adds 2/3 equivalent 'vw'
+/// @param $value - input value in px, e.g. input exact value from mockup specs 
+/// @example - margin: 0 px-to-vw(30px);
+@function px-to-vw($value, $root-value: 1920px) {
+$vw: ($root-value * 0.01);
+$min-value: ($value / 3);
+$responsive-part: ($value - $min-value);
+
+@return Calc(#{$min-value} + 1vw * ($responsive-part / $vw));
+}
+
+// @include center(both) || @include center(horizontal) || @include center(vertical)
+@mixin center($position) {
+  position: absolute;
+  
+  @if $position == 'vertical' {
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+  }
+  @else if $position == 'horizontal' {
+    left: 50%;
+    -webkit-transform: translateX(-50%);
+    -ms-transform: translateX(-50%);
+    transform: translate(-50%);
+  }
+  @else if $position == 'both' {
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+  }
+}
+
+
+/*
+@include screen('tablet') {
+  width: 90%;
+}
+*/
+@mixin screen($size) {
+  $desktop: "(min-width: 1024px)";
+  $tablet: "(min-width: 768px) and (max-width: 1023px)";
+  $mobile: "(max-width: 767px)";
+  @if $size == desktop {
+    @media only screen and #{$desktop} {
+      @content;
+    }
+  }
+  @else if $size == tablet {
+    @media only screen and #{$tablet} {
+      @content;
+    }
+  }
+  @else if $size == mobile {
+    @media only screen and #{$mobile} {
+      @content;
+    }
+  }
+  @else {
+    @media only screen and #{$size} {
+      @content;
+    }
+  }
+}
