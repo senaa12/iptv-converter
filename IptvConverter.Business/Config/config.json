@@ -1,0 +1,59 @@
+{
+  "IncludeOnlyHd": true,
+  "ChannelsOrder": [
+    1, // hrt 1
+    2, // hrt2
+    7, // rtl
+    5, // nova
+    6, // doma
+    8, // rtl2
+    12, // sk1
+    13, // sk2
+    14, // sk3
+    15, // arena1
+    16, //arena2
+    17, //arena3
+    18, //arena4
+    19, //arena5
+    9, //planet1
+    10, //planet2
+    11, //planet3
+    3, //hrt3
+    4, //hrt4
+    22, //hbo1
+    23, // hbo2
+    24, //hbo3
+    25, //cinemax1
+    26, //cinemax2
+    27, //premiere1
+    28, //premiere2
+    31, //foxlife
+    30, //foxmovies
+    29, //foxtv
+    32, //foxcrime
+    33, //cmc
+    34, //jugoton
+    35, //balkanika
+    36, //dmsat
+    37, //idjtv
+    38, //discovery channel
+    39, //national geographic
+    40, //cbs
+    41, //history tv
+    42, //sk1 srb
+    43, //sk2 srb
+    44, //sk3 srb
+    45, //aren1 srb
+    46, //arena2 srb
+    47, //arena3 srb
+    48, //arena4 srb
+    49, //arena5 srb
+    50, //hbo1 srb
+    51, //hbo2 srb
+    52, // hbo3 srb
+    53, // cinemax1 srb
+    54, //cinemax2 srb
+    55, //cinestar premiere1 srb
+    56, //cinestar premiere2 srb
+  ]
+}

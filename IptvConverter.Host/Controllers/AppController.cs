@@ -2,30 +2,42 @@
 using IptvConverter.Business.Services.Interfaces;
 using System.Net;
 using IptvConverter.Business.Models;
+using Microsoft.AspNetCore.Http;
+using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace IptvConverter.Host.Controllers
 {
     [Produces("application/json")] // without this it does not work for now
     [ApiController]
-    [Route("api")]
+    [Route("api/playlist")]
     public class AppController : ControllerBase
     {
+        private readonly IPlaylistService _playlistService;
         private readonly IAppService _appService;
 
-        public AppController(IAppService appService)
+        public AppController(IAppService appService, IPlaylistService playlistService)
         {
+            _playlistService = playlistService;
             _appService = appService;
         }
 
-        /// <summary>
-        /// Test endpoint 
-        /// </summary>
-        /// <returns>Dummy value</returns>
-        [ProducesResponseType(typeof(AjaxResponse), (int)HttpStatusCode.OK)]
-        [HttpGet]
-        public IActionResult Init()
+        [ProducesResponseType(typeof(AjaxResponse<List<IptvChannelExtended>>), (int)HttpStatusCode.OK)]
+        [HttpPost]
+        [Route("generate")]
+        public async Task<IActionResult> GeneratePlaylist(IFormFile playlist)
         {
-            return Ok(AjaxResponse.Success());
+            var generatedFile = await _playlistService.GeneratePlaylist(playlist, null);
+            return File(generatedFile, "audio/x-mpegurl", "GeneratedPlaylist");
+        }
+
+        [ProducesResponseType(typeof(AjaxResponse<List<IptvChannelExtended>>), (int)HttpStatusCode.OK)]
+        [HttpPost]
+        [Route("read")]
+        public async Task<IActionResult> ReadPlaylist(IFormFile playlist)
+        {
+            var channels = await _playlistService.ReadPlaylist(playlist);
+            return Ok(channels);
         }
     }
 }

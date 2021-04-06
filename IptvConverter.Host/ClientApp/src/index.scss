@@ -10,6 +10,7 @@ html, body, #app {
     width: 100%; 
     margin: 0;
     font-size: px-to-rem(14px); 
+    background-color: var(--blue-25-light);
     font-family: 'Ubuntu', sans-serif;
 }
 
@@ -23,8 +24,122 @@ html, body, #app {
 }
 
 body {
+    input {
+        padding: 6px;
+        margin: 6px;
+        border-radius: 8px;
+        border: solid 1px var(--black);
+        font-size: var(--normal-font-size);
+        min-width: px-to-vw(350px);
+
+        &::placeholder {
+            color: var(--white-30-dark);
+        }
+
+        &:disabled {
+            color: var(--white-30-dark);
+
+            &:active, &:focus {
+                box-shadow: none;
+                border: solid 1px var(--black);
+            }
+
+            &:hover {
+                cursor: not-allowed;
+            }
+        }
+
+        &:active, &:focus {
+            border: solid 1px var(--black);
+            box-shadow: 0 0 8px 2px var(--white-20-dark);
+        }
+
+        &:focus {
+            outline: none;
+        }
+        &::-webkit-datetime-edit-minute-field:focus,
+        &::-webkit-datetime-edit-hour-field:focus,
+        &::-webkit-datetime-edit-second-field:focus,
+        &::-webkit-datetime-edit-ampm-field:focus,
+        &::-webkit-datetime-edit-day-field:focus,
+        &::-webkit-datetime-edit-month-field:focus,
+        &::-webkit-datetime-edit-year-field:focus,
+        &::selection {
+            background-color: var(--blue-90-transp);
+            color: var(--black);
+        }
+    
+        &::-webkit-inner-spin-button,
+        &::-webkit-outer-spin-button,
+        &::-webkit-clear-button  {
+            display: none;
+        }
+    
+        &::-webkit-calendar-picker-indicator {
+            &:hover {
+                cursor: pointer;
+                background-color: var(--white);
+            }
+
+            &:focus {
+                outline: none;
+                -webkit-appearance:none;
+            }
+        }
+    }
+
+    button {
+        background-color: var(--yellow-15-dark);
+        padding: 7px 16px;
+        
+        color: var(--black);
+        font-weight: 700;
+        font-size: var(--normal-font-size);
+
+        border: solid 2px var(--yellow-15-dark);
+        border-radius: 16px;
+
+        &.textual {
+            background-color: transparent;
+            color: var(--white);
+
+            border: solid 2px var(--comp-purple);
+
+            &:hover {
+                box-shadow: none;
+            }
+
+            &:disabled {
+                background-color: var(--yellow-30-light);
+                border: solid 2px var(--yellow-30-light);
+                color: var(--white-30-dark);
+            }
+        }
+
+        &:focus {
+            outline: none;
+        }
+
+        &:hover {
+            cursor: pointer;
+            box-shadow: 0 0 8px 2px var(--yellow-30-light);
+        }
+
+        &:disabled {
+            background-color: var(--yellow-30-light);
+            border: solid 2px var(--yellow-30-light);
+        }
+
+        &:disabled:hover {
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+    }
+
     .clickable {
-        cursor: pointer;
+        &:hover {
+            cursor: pointer;
+        }
     }
 
     .scrollbar {

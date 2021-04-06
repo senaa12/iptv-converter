@@ -1,0 +1,17 @@
+input[type="file"] {
+	display: none;
+}
+
+.input-file-container {
+	display: flex;
+	align-items: center;
+}
+
+.placeholder {
+	margin-right: 10px;
+	opacity: 0.45;
+}
+
+.filename {
+	margin-right: 10px;
+}

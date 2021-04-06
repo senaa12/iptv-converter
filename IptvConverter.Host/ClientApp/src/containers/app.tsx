@@ -1,11 +1,12 @@
 import React from 'react';
-import { BrowserRouter, Switch, Link } from 'react-router-dom';
+import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import Home from './home/home';
 
 const app: React.FC = () => {
     return (
         <BrowserRouter>
             <Switch>
-                <Link to="/" style={{ margin: '0 5px' }}>Home</Link>
+                <Route path="/" component={Home} />
             </Switch>
         </BrowserRouter>           
     );

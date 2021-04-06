@@ -1,0 +1,590 @@
+[
+  {
+    "ID": 1,
+    "EpgId": "HRT 1",
+    "Name": "HRT 1",
+    "Pattern": "HRT 1 HR",
+    "Group": "Generic",
+    "Logo": "https://i.imgur.com/TKeYhv4.png",
+    "ShouldCollect": true,
+    "Country": "hr"
+  },
+  {
+    "ID": 2,
+    "EpgId": "HRT 2",
+    "Name": "HRT 2",
+    "Pattern": "HRT 2 HR",
+    "Group": "Generic",
+    "Logo": "https://i.imgur.com/1IEsKEx.png",
+    "ShouldCollect": true,
+    "Country": "hr"
+  },
+  {
+    "ID": 3,
+    "EpgId": "HRT 3",
+    "Name": "HRT 3",
+    "Pattern": "HRT 3 HR",
+    "Group": "Generic",
+    "Logo": "https://i.imgur.com/jrbkYGc.png",
+    "ShouldCollect": true,
+    "Country": "hr"
+  },
+  {
+    "ID": 4,
+    "EpgId": "HRT 4",
+    "Name": "HRT 4",
+    "Pattern": "HRT 4 HR",
+    "Group": "Generic",
+    "Logo": "https://i.imgur.com/cgC9DND.png",
+    "ShouldCollect": true,
+    "Country": "hr"
+  },
+  {
+    "ID": 5,
+    "EpgId": "NOVA TV",
+    "Name": "NOVA TV HR",
+    "Pattern": "NOVA Nova TV HR",
+    "Group": "Generic",
+    "Logo": "https://i.imgur.com/5YzO3rb.png",
+    "ShouldCollect": true,
+    "Country": "hr"
+  },
+  {
+    "ID": 6,
+    "EpgId": "Doma TV",
+    "Name": "Doma TV",
+    "Pattern": "Doma DOMA TV HR",
+    "Group": "Generic",
+    "Logo": "https://i.imgur.com/ZCKxSjI.png",
+    "ShouldCollect": true,
+    "Country": "hr"
+  },
+  {
+    "ID": 7,
+    "EpgId": "RTL Televizija",
+    "Name": "RTL HR",
+    "Pattern": "Rtl HR",
+    "Group": "Generic",
+    "Logo": "https://i.imgur.com/NKxaqnO.png",
+    "ShouldCollect": true,
+    "Country": "hr"
+  },
+  {
+    "ID": 8,
+    "EpgId": "RTL II",
+    "Name": "RTL 2",
+    "Pattern": "Rtl RTL 2 HR",
+    "Group": "Generic",
+    "Logo": "https://i.imgur.com/CvEfBhr.png",
+    "ShouldCollect": true,
+    "Country": "hr"
+  },
+  {
+    "ID": 9,
+    "EpgId": "PlanetSport 1",
+    "Name": "PlanetSport 1",
+    "Pattern": "Planet Sport Planetsport PlanetSport 1 HR",
+    "Group": "Sport",
+    "Logo": "https://i.imgur.com/zVEQBa7.png",
+    "ShouldCollect": true,
+    "Country": "hr"
+  },
+  {
+    "ID": 10,
+    "EpgId": "PlanetSport 2",
+    "Name": "PlanetSport 2",
+    "Pattern": "Planet Sport Planetsport PlanetSport 2 HR",
+    "Group": "Sport",
+    "Logo": "https://i.imgur.com/UHLO2vp.png",
+    "ShouldCollect": true,
+    "Country": "hr"
+  },
+  {
+    "ID": 11,
+    "EpgId": "PlanetSport 3",
+    "Name": "PlanetSport 3",
+    "Pattern": "Planet Sport Planetsport PlanetSport 3 HR",
+    "Group": "Sport",
+    "Logo": "https://i.imgur.com/ZVEgMYo.png",
+    "ShouldCollect": true,
+    "Country": "hr"
+  },
+  {
+    "ID": 12,
+    "EpgId": "SportKlub 1",
+    "Name": "SportKlub 1 HR",
+    "Pattern": "SportKlub Sport Klub 1 HR",
+    "Group": "Sport",
+    "Logo": "https://i.imgur.com/nYVnbPa.png",
+    "ShouldCollect": true,
+    "Country": "hr"
+  },
+  {
+    "ID": 13,
+    "EpgId": "SportKlub 2",
+    "Name": "SportKlub 2 HR",
+    "Pattern": "SportKlub Sport Klub 2 HR",
+    "Group": "Sport",
+    "Logo": "https://i.imgur.com/5hmfTi6.png",
+    "ShouldCollect": true,
+    "Country": "hr"
+  },
+  {
+    "ID": 14,
+    "EpgId": "SportKlub 3",
+    "Name": "SportKlub 3 HR",
+    "Pattern": "SportKlub Sport Klub 3 HR",
+    "Group": "Sport",
+    "Logo": "https://i.imgur.com/iLPN740.png",
+    "ShouldCollect": true,
+    "Country": "hr"
+  },
+  {
+    "ID": 15,
+    "EpgId": "Arena Sport 1",
+    "Name": "Arena Sport 1 HR",
+    "Pattern": "Arena Sport 1 HR",
+    "Group": "Sport",
+    "Logo": "https://i.imgur.com/pP9L3To.png",
+    "ShouldCollect": true,
+    "Country": "hr"
+  },
+  {
+    "ID": 16,
+    "EpgId": "Arena Sport 2",
+    "Name": "Arena Sport 2 HR",
+    "Pattern": "Arena Sport 2 HR",
+    "Group": "Sport",
+    "Logo": "https://i.imgur.com/cCcWDk9.png",
+    "ShouldCollect": true,
+    "Country": "hr"
+  },
+  {
+    "ID": 17,
+    "EpgId": "Arena Sport 3",
+    "Name": "Arena Sport 3 HR",
+    "Pattern": "Arena Sport 3 HR",
+    "Group": "Sport",
+    "Logo": "https://i.imgur.com/pqEjvEs.png",
+    "ShouldCollect": true,
+    "Country": "hr"
+  },
+  {
+    "ID": 18,
+    "EpgId": "Arena Sport 4",
+    "Name": "Arena Sport 4 HR",
+    "Pattern": "Arena Sport 4 HR",
+    "Group": "Sport",
+    "Logo": "https://i.imgur.com/hMQGK7T.png",
+    "ShouldCollect": true,
+    "Country": "hr"
+  },
+  {
+    "ID": 19,
+    "EpgId": "Arena Sport 5",
+    "Name": "Arena Sport 5 HR",
+    "Pattern": "Arena Sport 5 HR",
+    "Group": "Sport",
+    "Logo": "https://i.imgur.com/kOX8ia4.png",
+    "ShouldCollect": true,
+    "Country": "hr"
+  },
+  {
+    "ID": 20,
+    "EpgId": "EuroSport 1",
+    "Name": "EuroSport 1",
+    "Pattern": "EuroSport 1",
+    "Group": "Sport",
+    "Logo": "https://i.imgur.com/1nOHFRv.jpg",
+    "ShouldCollect": true,
+    "Country": ""
+  },
+  {
+    "ID": 21,
+    "EpgId": "EuroSport 2",
+    "Name": "EuroSport 2",
+    "Pattern": "EuroSport 2",
+    "Group": "Sport",
+    "Logo": "https://i.imgur.com/GtJYkrr.jpg",
+    "ShouldCollect": true,
+    "Country": ""
+  },
+  {
+    "ID": 22,
+    "EpgId": "HBO",
+    "Name": "HBO 1",
+    "Pattern": "HBO 1 HR",
+    "Group": "Movies",
+    "Logo": "https://i.imgur.com/plsZMn4.png",
+    "ShouldCollect": true,
+    "Country": "hr"
+  },
+  {
+    "ID": 23,
+    "EpgId": "HBO 2",
+    "Name": "HBO 2",
+    "Pattern": "HBO 2 HR",
+    "Group": "Movies",
+    "Logo": "https://i.imgur.com/u3WaJ8I.png",
+    "ShouldCollect": true,
+    "Country": "hr"
+  },
+  {
+    "ID": 24,
+    "EpgId": "HBO 3",
+    "Name": "HBO 3",
+    "Pattern": "HBO 3 HR",
+    "Group": "Movies",
+    "Logo": "https://i.imgur.com/THr8II4.png",
+    "ShouldCollect": true,
+    "Country": "hr"
+  },
+  {
+    "ID": 25,
+    "EpgId": "Cinemax 1",
+    "Name": "Cinemax 1",
+    "Pattern": "Cinemax 1 HR Cinemax-1",
+    "Group": "Movies",
+    "Logo": "https://i.imgur.com/dVqvW4J.png",
+    "ShouldCollect": true,
+    "Country": "hr"
+  },
+  {
+    "ID": 26,
+    "EpgId": "Cinemax 2",
+    "Name": "Cinemax 2",
+    "Pattern": "Cinemax 2 HR Cinemax-2",
+    "Group": "Movies",
+    "Logo": "https://i.imgur.com/VkMBTYo.png",
+    "ShouldCollect": true,
+    "Country": "hr"
+  },
+  {
+    "ID": 27,
+    "EpgId": "CineStar Premiere 1",
+    "Name": "CineStar Premiere 1",
+    "Pattern": "CineStar Premiere 1 HR",
+    "Group": "Movies",
+    "Logo": "https://i.imgur.com/fXMTq97.png",
+    "ShouldCollect": true,
+    "Country": "hr"
+  },
+  {
+    "ID": 28,
+    "EpgId": "CineStar Premiere 2",
+    "Name": "CineStar Premiere 2",
+    "Pattern": "CineStar Premiere 2 HR",
+    "Group": "Movies",
+    "Logo": "https://i.imgur.com/HBZy6X7.png",
+    "ShouldCollect": true,
+    "Country": "hr"
+  },
+  {
+    "ID": 29,
+    "EpgId": "FOX TV",
+    "Name": "FOX",
+    "Pattern": "FOX TV HR",
+    "Group": "Movies",
+    "Logo": "https://i.imgur.com/nccZPW9.png",
+    "ShouldCollect": true,
+    "Country": "hr"
+  },
+  {
+    "ID": 30,
+    "EpgId": "FOX Movies",
+    "Name": "FOX Movies",
+    "Pattern": "FOX Movies HD HR",
+    "Group": "Movies",
+    "Logo": "https://i.imgur.com/MzAClwy.png",
+    "ShouldCollect": true,
+    "Country": "hr"
+  },
+  {
+    "ID": 31,
+    "EpgId": "FOX Life",
+    "Name": "FOX Life",
+    "Pattern": "FOX Life HD HR",
+    "Group": "Movies",
+    "Logo": "https://i.imgur.com/ynLvDQt.png",
+    "ShouldCollect": true,
+    "Country": "hr"
+  },
+  {
+    "ID": 32,
+    "EpgId": "FOX Crime",
+    "Name": "FOX Crime",
+    "Pattern": "FOX Crime HD HR",
+    "Group": "Movies",
+    "Logo": "https://i.imgur.com/5wovRiD.png",
+    "ShouldCollect": true,
+    "Country": "hr"
+  },
+  {
+    "ID": 33,
+    "EpgId": "CMC",
+    "Name": "CMC",
+    "Pattern": "CMC HR",
+    "Group": "Music",
+    "Logo": "https://i.imgur.com/wysegpk.png",
+    "ShouldCollect": true,
+    "Country": "hr"
+  },
+  {
+    "ID": 34,
+    "EpgId": "Jugoton",
+    "Name": "Jugoton",
+    "Pattern": "Jugoton HR",
+    "Group": "Music",
+    "Logo": "https://i.imgur.com/vIWvrM7.png",
+    "ShouldCollect": true,
+    "Country": "hr"
+  },
+  {
+    "ID": 35,
+    "EpgId": "Balkanika",
+    "Name": "Balkanika",
+    "Pattern": "Balkanika",
+    "Group": "Music",
+    "Logo": "https://i.imgur.com/i18kBKf.png",
+    "ShouldCollect": false,
+    "Country": "hr"
+  },
+  {
+    "ID": 36,
+    "EpgId": "DM SAT",
+    "Name": "DM SAT",
+    "Pattern": "DM SAT",
+    "Group": "Music",
+    "Logo": "https://i.imgur.com/WdbSWtM.png",
+    "ShouldCollect": true,
+    "Country": "rs"
+  },
+  {
+    "ID": 37,
+    "EpgId": "IDJ TV",
+    "Name": "IDJ TV",
+    "Pattern": "IDJ TV RS",
+    "Group": "Music",
+    "Logo": "https://i.imgur.com/hE8kTEX.png",
+    "ShouldCollect": true,
+    "Country": "srb"
+  },
+  {
+    "ID": 38,
+    "EpgId": "Discovery Channel",
+    "Name": "Discovery Channel",
+    "Pattern": "Discovery Channel HR",
+    "Group": "Documentary",
+    "Logo": "https://i.imgur.com/S0w9l2L.png",
+    "ShouldCollect": true,
+    "Country": "hr"
+  },
+  {
+    "ID": 39,
+    "EpgId": "National Geographic",
+    "Name": "National Geographic",
+    "Pattern": "National Geographic HR",
+    "Group": "Documentary",
+    "Logo": "https://i.imgur.com/wbzG1hx.png",
+    "ShouldCollect": true,
+    "Country": "hr"
+  },
+  {
+    "ID": 40,
+    "EpgId": "CBS Reality",
+    "Name": "CBS Reality",
+    "Pattern": "CBS Reality",
+    "Group": "Documentary",
+    "ShouldCollect": true,
+    "Country": "hr"
+  },
+  {
+    "ID": 41,
+    "EpgId": "History Channel",
+    "Name": "History Channel",
+    "Pattern": "History Channel HR",
+    "Group": "Documentary",
+    "Logo": "https://i.imgur.com/WWKWnJC.png",
+    "ShouldCollect": true,
+    "Country": "hr"
+  },
+  {
+    "ID": 42,
+    "EpgId": "SportKlub 1 SRB",
+    "Name": "SportKlub 1 SR",
+    "Pattern": "SportKlub Sport Klub 1 SR RS SRB",
+    "Group": "Sport",
+    "Logo": "https://i.imgur.com/nYVnbPa.png",
+    "ShouldCollect": true,
+    "Country": "srb"
+  },
+  {
+    "ID": 43,
+    "EpgId": "SportKlub 2 SRB",
+    "Name": "SportKlub 2 SR",
+    "Pattern": "SportKlub Sport Klub 2 SR RS SRB",
+    "Group": "Sport",
+    "Logo": "https://i.imgur.com/5hmfTi6.png",
+    "ShouldCollect": true,
+    "Country": "srb"
+  },
+  {
+    "ID": 44,
+    "EpgId": "SportKlub 3 SRB",
+    "Name": "SportKlub 3 SR",
+    "Pattern": "SportKlub Sport Klub 3 SR RS SRB",
+    "Group": "Sport",
+    "Logo": "https://i.imgur.com/iLPN740.png",
+    "ShouldCollect": true,
+    "Country": "srb"
+  },
+  {
+    "ID": 45,
+    "EpgId": "Arena Sport 1 SRB",
+    "Name": "Arena Sport 1 SR",
+    "Pattern": "Arena Sport 1 SR RS SRB",
+    "Group": "Sport",
+    "Logo": "https://i.imgur.com/pP9L3To.png",
+    "ShouldCollect": true,
+    "Country": "srb"
+  },
+  {
+    "ID": 46,
+    "EpgId": "Arena Sport 2 SRB",
+    "Name": "Arena Sport 2 SR",
+    "Pattern": "Arena Sport 2 SR RS SRB",
+    "Group": "Sport",
+    "Logo": "https://i.imgur.com/cCcWDk9.png",
+    "ShouldCollect": true,
+    "Country": "srb"
+  },
+  {
+    "ID": 47,
+    "EpgId": "Arena Sport 3 SRB",
+    "Name": "Arena Sport 3 SR",
+    "Pattern": "Arena Sport 3 SR RS SRB",
+    "Group": "Sport",
+    "Logo": "https://i.imgur.com/pqEjvEs.png",
+    "ShouldCollect": true,
+    "Country": "srb"
+  },
+  {
+    "ID": 48,
+    "EpgId": "Arena Sport 4 SRB",
+    "Name": "Arena Sport 4 SR",
+    "Pattern": "Arena Sport 4 SR RS SRB",
+    "Group": "Sport",
+    "Logo": "https://i.imgur.com/hMQGK7T.png",
+    "ShouldCollect": true,
+    "Country": "srb"
+  },
+  {
+    "ID": 49,
+    "EpgId": "Arena Sport 5 SRB",
+    "Name": "Arena Sport 5 SR",
+    "Pattern": "Arena Sport 5 SR RS SRB",
+    "Group": "Sport",
+    "Logo": "https://i.imgur.com/kOX8ia4.png",
+    "ShouldCollect": true,
+    "Country": "srb"
+  },
+  {
+    "ID": 50,
+    "EpgId": "HBO SRB",
+    "Name": "HBO 1 SR",
+    "Pattern": "HBO 1 RS Adria",
+    "Group": "Movies",
+    "Logo": "https://i.imgur.com/plsZMn4.png",
+    "ShouldCollect": true,
+    "Country": "srb"
+  },
+  {
+    "ID": 51,
+    "EpgId": "HBO 2 SRB",
+    "Name": "HBO 2 SR",
+    "Pattern": "HBO 2 RS",
+    "Group": "Movies",
+    "Logo": "https://i.imgur.com/u3WaJ8I.png",
+    "ShouldCollect": true,
+    "Country": "srb"
+  },
+  {
+    "ID": 52,
+    "EpgId": "HBO 3 SRB",
+    "Name": "HBO 3 SR",
+    "Pattern": "HBO 3 RS",
+    "Group": "Movies",
+    "Logo": "https://i.imgur.com/THr8II4.png",
+    "ShouldCollect": true,
+    "Country": "srb"
+  },
+  {
+    "ID": 53,
+    "EpgId": "Cinemax 1 SRB",
+    "Name": "Cinemax 1 SR",
+    "Pattern": "Cinemax 1 RS Cinemax-1",
+    "Group": "Movies",
+    "Logo": "https://i.imgur.com/dVqvW4J.png",
+    "ShouldCollect": true,
+    "Country": "srb"
+  },
+  {
+    "ID": 54,
+    "EpgId": "Cinemax 2 SRB",
+    "Name": "Cinemax 2 RS",
+    "Pattern": "Cinemax 2 RS Cinemax-2",
+    "Group": "Movies",
+    "Logo": "https://i.imgur.com/VkMBTYo.png",
+    "ShouldCollect": true,
+    "Country": "srb"
+  },
+  {
+    "ID": 55,
+    "EpgId": "CineStar Premiere 1 SRB",
+    "Name": "CineStar Premiere 1 SR",
+    "Pattern": "CineStar Premiere 1 RS",
+    "Group": "Movies",
+    "Logo": "https://i.imgur.com/fXMTq97.png",
+    "ShouldCollect": true,
+    "Country": "srb"
+  },
+  {
+    "ID": 56,
+    "EpgId": "CineStar Premiere 2 SRB",
+    "Name": "CineStar Premiere 2 SR",
+    "Pattern": "CineStar Premiere 2 RS",
+    "Group": "Movies",
+    "Logo": "https://i.imgur.com/HBZy6X7.png",
+    "ShouldCollect": true,
+    "Country": "srb"
+  },
+  {
+    "ID": 57,
+    "EpgId": "RTS 1",
+    "Name": "RTS 1",
+    "Pattern": "RTS 1 RS SR SRB",
+    "Group": "Generic",
+    "Logo": "https://i.imgur.com/RZhX9nx.png",
+    "ShouldCollect": true,
+    "Country": "srb"
+  },
+  {
+    "ID": 58,
+    "EpgId": "RTS 2",
+    "Name": "RTS 2",
+    "Pattern": "RTS 2 RS SR SRB",
+    "Group": "Generic",
+    "Logo": "https://i.imgur.com/Ezr3zUE.png",
+    "ShouldCollect": true,
+    "Country": "srb"
+  },
+  {
+    "ID": -1,
+    "EpgId": "",
+    "Name": "",
+    "Pattern": "Discovery TVCG Pink Tring Channel Sky Movies Max Prva Balkanika RTCG RTV Mini Nasa BAby Pazar SAT BN Balkanika ID 101 Happy Sandzak Cinestar Eurosport Select Crime Nova Kanal Fight Investigation Drine 1 2 3 4 5 RS ME BA",
+    "Group": "",
+    "ShouldCollect": false,
+    "Country": ""
+  }
+]
