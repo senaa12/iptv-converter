@@ -13,11 +13,11 @@ namespace IptvConverter.Business.Models
         {
             var line = $"#EXTINF:{ExtInf}";
             if (!string.IsNullOrEmpty(EpgId))
-                line = $"{line} tvg-id=\"{EpgId}\" tvg-name=\"{EpgId}\"";
+                line = $"{line} tvg-id=\"{EpgId.Trim()}\" tvg-name=\"{EpgId.Trim()}\"";
             if (!string.IsNullOrEmpty(Logo))
-                line = $"{line} tvg-logo=\"{Logo}\"";
+                line = $"{line} tvg-logo=\"{Logo.Trim()}\"";
             if (!string.IsNullOrEmpty(Group))
-                line = $"{line} group-title=\"{Group}\"";
+                line = $"{line} group-title=\"{Group.Trim()}\"";
             line = $"{line}, {Name}";
             return line;
         }
