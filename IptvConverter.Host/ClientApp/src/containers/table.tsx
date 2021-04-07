@@ -4,9 +4,9 @@ import {
   SortableElement,
   SortableHandle
 } from "react-sortable-hoc";
-import Checkbox from '../../components/checkbox/checkbox';
-import Input from '../../components/input/input';
-import Icon, { IconEnum } from '../../components/icon';
+import Checkbox from '../components/checkbox/checkbox';
+import Input from '../components/input/input';
+import Icon, { IconEnum } from '../components/icon';
 
 const arrayMoveMutate = (array, from, to) => {
   array.splice(to < 0 ? array.length + to : to, 0, array.splice(from, 1)[0]);
