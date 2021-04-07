@@ -7,14 +7,14 @@
     padding-bottom: 5px;
 
     position: relative;
-    border-bottom: solid 2px var(--white);
+    border-bottom: solid 2px var(--white-10-dark);
 
     .menu-item {
         text-align: center;
 
         &.active {
             font-weight: 700;
-            color: var(--comp-yellow);
+            color: var(--black);
         }
     }
 
@@ -22,7 +22,7 @@
         position: absolute;
         bottom: -2px;
         height: 2px;
-        background-color: var(--comp-yellow);
+        background-color: var(--black);
 
         transition: all .2s cubic-bezier(.25, .25, .25, 1.25);
     }

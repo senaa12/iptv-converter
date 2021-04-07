@@ -31,6 +31,7 @@ module.exports = {
     },
     module: {
         rules: [
+            rules.svgLoader,
             rules.typescript,
             rules.scssDevLoader,
         ]

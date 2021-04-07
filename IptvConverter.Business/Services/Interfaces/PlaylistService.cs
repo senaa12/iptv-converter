@@ -38,36 +38,17 @@ namespace IptvConverter.Business.Services.Interfaces
             return result;
         }
 
-        public async Task<byte[]> GeneratePlaylist(IFormFile basePlaylist, List<int> customization = null)
+        public async Task<List<IptvChannelExtended>> ProcessPlaylist(IFormFile playlistFile)
         {
-            var readPlayList = await ReadPlaylist(basePlaylist);
+            var readPlayList = await ReadPlaylist(playlistFile);
 
             var processedChannels = new List<IptvChannelExtended>();
-            if(customization == null)
+            foreach (var idToInsert in Config.Config.Instance.GetChannelsOrder())
             {
-                foreach(var idToInsert in Config.Config.Instance.GetChannelsOrder())
+                var channelsToProcess = readPlayList.Where(x => x.ID == idToInsert).ToList();
+                foreach (var channel in channelsToProcess)
                 {
-                    var channel = readPlayList.FirstOrDefault(x => x.ID == idToInsert);
-                    if(channel != null)
-                    {
-                        var config = Config.ChannelsConfig.Instance.GetById((int)idToInsert);
-                        processedChannels.Add(new IptvChannelExtended
-                        {
-                            ID = channel.ID,
-                            ExtInf = channel.ExtInf,
-                            Group = channel.Group,
-                            Name = channel.Name,
-                            Uri = channel.Uri,
-                            EpgId = config.EpgId,
-                            Logo = config.Logo,
-                            Pattern = config.Pattern
-                        });
-                    }
-                }
-
-                foreach (var channel in readPlayList.Where(x => x.Recognized == true && x.ShouldCollect == true).Where(x => processedChannels.FirstOrDefault(y => x.ID == y.ID) == null).OrderBy(x => x.ID))
-                {
-                    var config = Config.ChannelsConfig.Instance.GetById((int)channel.ID);
+                    var config = Config.ChannelsConfig.Instance.GetById((int)idToInsert);
                     processedChannels.Add(new IptvChannelExtended
                     {
                         ID = channel.ID,
@@ -75,21 +56,63 @@ namespace IptvConverter.Business.Services.Interfaces
                         Group = channel.Group,
                         Name = channel.Name,
                         Uri = channel.Uri,
+                        Recognized = channel.Recognized,
+                        ShouldCollect = channel.ShouldCollect,
+                        Country = channel.Country,
                         EpgId = config.EpgId,
                         Logo = config.Logo,
                         Pattern = config.Pattern
                     });
+
+                    readPlayList.Remove(channel);
                 }
             }
-            else
-            {
 
+            var restOfTheChannels = readPlayList.Where(x => x.Recognized == true).OrderBy(x => x.ID).ToList();
+            foreach (var channel in restOfTheChannels)
+            {
+                if (processedChannels.Any(x => x.ID == channel.ID) == true)
+                {
+                    continue;
+                }
+
+                var config = Config.ChannelsConfig.Instance.GetById((int)channel.ID);
+                processedChannels.Add(new IptvChannelExtended
+                {
+                    ID = channel.ID,
+                    ExtInf = channel.ExtInf,
+                    Group = channel.Group,
+                    Name = channel.Name,
+                    Uri = channel.Uri,
+                    Recognized = channel.Recognized,
+                    ShouldCollect = channel.ShouldCollect,
+                    Country = channel.Country,
+                    EpgId = config.EpgId,
+                    Logo = config.Logo,
+                    Pattern = config.Pattern
+                });
+
+                readPlayList.Remove(channel);
             }
 
-            var rows = generatePlaylistRows(processedChannels.Where(x => x.Hd == true).Select(x => new IptvChannel(x)).ToList());
+            foreach (var channel in readPlayList)
+                processedChannels.Add(channel);
+
+            return processedChannels;
+        }
+
+        public async Task<byte[]> BuildPlaylistFile(IFormFile playlist)
+        {
+            var channels = await ProcessPlaylist(playlist);
+            return await BuildPlaylistFile(channels.Select(x => new IptvChannel(x)).ToList());
+        }
+
+        public async Task<byte[]> BuildPlaylistFile(List<IptvChannel> channels)
+        {
+            var rows = generatePlaylistRows(channels);
 
             var fs = new MemoryStream();
-            using(var writer = new StreamWriter(fs))
+            using (var writer = new StreamWriter(fs))
             {
                 foreach (string line in rows)
                     writer.WriteLine(line);

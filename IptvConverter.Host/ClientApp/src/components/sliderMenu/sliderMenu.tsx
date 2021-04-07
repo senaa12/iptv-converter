@@ -5,39 +5,39 @@ import './sliderMenu.scss';
 
 interface SliderMenuProps {
     options: any[];
-    selected: any;
-    getLabelId: (option: any) => string | number;
-    getLabel: (optionId: any) => string;
+    selectedOption: any;
+    getOptionId: (option: any) => string | number;
+    getOptionLabel: (optionId: any) => string;
     onSelect: (optionId: any) => void;
     width: number | string;
     className?: string;
     style?: CSSProperties;
 }
 
-const sliderMenu = ({ options, getLabel, onSelect, getLabelId, width, selected, className, style }: SliderMenuProps) => {
+const sliderMenu = ({ options, getOptionId, onSelect, getOptionLabel, width, selectedOption, className, style }: SliderMenuProps) => {
     const barStyle = useMemo(
         () => { 
-            const selectedIndex = options.findIndex(x => getLabelId(x) === getLabelId(selected));
+            const selectedIndex = options.findIndex(x => getOptionId(x) === getOptionId(selectedOption));
 
             return {
                 width: `calc(${width}${typeof(width) === 'number' ? 'px' : ''}/${options.length})`,
                 left: `calc(${selectedIndex} * (${width}${typeof(width) === 'number' ? 'px' : ''}/${options.length}))`
             } as CSSProperties;
         },
-        [selected, getLabelId, options]
+        [selectedOption, getOptionId, options]
     );
 
     const menuItemOnClick = useCallback(
         (newItem: any) => () => {
-            if(getLabelId(selected) !== getLabelId(newItem)) {
+            if(getOptionId(selectedOption) !== getOptionId(newItem)) {
                 onSelect(newItem);
             }
         },
-        [onSelect, getLabelId, selected]
+        [onSelect, getOptionId, selectedOption]
     );
 
-    const menuItemClassname = (itemType: any) => classNames('menu-item', 'clickable', {
-        'active': getLabelId(itemType) === getLabelId(selected)
+    const menuItemClassname = (itemType: any) => classNames('menu-item', {
+        'active': getOptionId(itemType) === getOptionId(selectedOption)
     });
 
     const computedClassName = classNames('slider-menu', className, {
@@ -54,7 +54,7 @@ const sliderMenu = ({ options, getLabel, onSelect, getLabelId, width, selected, 
                             onClick={menuItemOnClick(option)}
                             className={menuItemClassname(option)}
                         >
-                            {getLabel(option)}
+                            {getOptionLabel(option)}
                         </div>
                     )
                 })

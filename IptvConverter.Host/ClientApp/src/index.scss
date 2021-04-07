@@ -31,6 +31,7 @@ body {
         border: solid 1px var(--black);
         font-size: var(--normal-font-size);
         min-width: px-to-vw(350px);
+        background-color: var(--blue-25-light);
 
         &::placeholder {
             color: var(--white-30-dark);
@@ -88,6 +89,32 @@ body {
         }
     }
 
+    table {
+
+        thead {
+            th {
+                border-bottom: solid 1px black;
+            }
+        }
+
+        td, th {
+            height: 40px;
+            border-left: solid 1px;
+            border-color: var(--black);
+            text-align: center;
+
+            &:first-child {
+                border-left: 0;
+            }
+        }
+    }
+
+    .handler {
+        &:hover {
+            cursor: grab;
+        }
+    }
+
     button {
         background-color: var(--yellow-15-dark);
         padding: 7px 16px;
@@ -100,18 +127,15 @@ body {
         border-radius: 16px;
 
         &.textual {
+            border: none;
             background-color: transparent;
-            color: var(--white);
-
-            border: solid 2px var(--comp-purple);
+            color: var(--black);
 
             &:hover {
                 box-shadow: none;
             }
 
             &:disabled {
-                background-color: var(--yellow-30-light);
-                border: solid 2px var(--yellow-30-light);
                 color: var(--white-30-dark);
             }
         }
@@ -126,8 +150,7 @@ body {
         }
 
         &:disabled {
-            background-color: var(--yellow-30-light);
-            border: solid 2px var(--yellow-30-light);
+            color: var(--white-30-dark);
         }
 
         &:disabled:hover {
@@ -140,6 +163,13 @@ body {
         &:hover {
             cursor: pointer;
         }
+    }
+
+    .placeholder, .filename {
+        width: 400px;
+        border: solid;
+        padding: 5px;
+        border-radius: 16px;
     }
 
     .scrollbar {

@@ -11,7 +11,11 @@ namespace IptvConverter.Business.Services.Interfaces
     {
         Task<List<IptvChannelExtended>> ReadPlaylist(IFormFile playlistFile);
 
-        Task<byte[]> GeneratePlaylist(IFormFile basePlaylist, List<int> customization = null);
+        Task<List<IptvChannelExtended>> ProcessPlaylist(IFormFile playlistFile);
+
+        Task<byte[]> BuildPlaylistFile(IFormFile playlist);
+
+        Task<byte[]> BuildPlaylistFile(List<IptvChannel> channels);
 
         IptvChannelExtended ParseIntoChannel(string line);
     }
