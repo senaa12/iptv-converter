@@ -7,24 +7,13 @@ import {
 import Checkbox from '../components/checkbox/checkbox';
 import Input from '../components/input/input';
 import Icon, { IconEnum } from '../components/icon';
+import { arrayMove } from '../utilities/functions';
 
-const arrayMoveMutate = (array, from, to) => {
-  array.splice(to < 0 ? array.length + to : to, 0, array.splice(from, 1)[0]);
-};
-
-const arrayMove = (array, from, to) => {
-  array = array.slice();
-  arrayMoveMutate(array, from, to);
-  return array;
-};
-
-const SortableCont = SortableContainer(({ children }) => {
-  return <tbody>{children}</tbody>;
-});
+const SortableCont = SortableContainer(({ children }) => <tbody>{children}</tbody>);
 
 const SortableItem = SortableElement((props) => <TableRow {...props} />);
 
-const RowHandler = SortableHandle((children) => <Icon iconName={IconEnum.More} className={'handler'} />);
+const RowHandler = SortableHandle(() => <Icon iconName={IconEnum.More} className={'handler'} style={{ fill: 'var(--white)' }} />);
 
 const TableRow = ({ channel, toggleCheck, epgNameChange, groupNameChange, filter, className }) => {
   return (
@@ -45,7 +34,7 @@ const TableRow = ({ channel, toggleCheck, epgNameChange, groupNameChange, filter
             value={channel.epgId}
             onChange={epgNameChange}
           />
-        </td>
+      </td>
       <td>
           <Input 
             type={'text'}
@@ -79,7 +68,7 @@ const MyTable = ({items, filter, setItems, toggleCheck, epgNameChange, groupName
       <table className="table table-dark fixed_header">
         <thead>
           <tr>
-            <th>Include</th>
+            <th>{filter ? 'Include' : ''}</th>
             <th>Name</th>
             <th>Epg</th>
             <th style={{ width: 150 }}>Group</th>
@@ -96,8 +85,8 @@ const MyTable = ({items, filter, setItems, toggleCheck, epgNameChange, groupName
           helperClass="helperContainerClass"
           useDragHandle={true}
         >
-          {items.map((value, index) => (
-          <SortableItem
+          {items?.map((value, index) => (
+            <SortableItem
               key={`item-${index}`}
               index={index}
               channel={value}

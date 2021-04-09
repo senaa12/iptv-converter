@@ -43,9 +43,9 @@ namespace IptvConverter.Host.Controllers
         [ProducesResponseType(typeof(AjaxResponse<List<IptvChannelExtended>>), (int)HttpStatusCode.OK)]
         [HttpPost]
         [Route("preview")]
-        public async Task<IActionResult> ReadPlaylist(IFormFile playlist)
+        public async Task<IActionResult> ReadPlaylist(IFormFile playlist, bool fillData = true)
         {
-            var channels = await _playlistService.ProcessPlaylist(playlist);
+            var channels = await _playlistService.ProcessPlaylist(playlist, fillData);
             return Ok(AjaxResponse<List<IptvChannelExtended>>.Success(channels));
         }
     }

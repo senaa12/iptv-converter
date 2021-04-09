@@ -10,11 +10,15 @@ html, body, #app {
     width: 100%; 
     margin: 0;
     font-size: px-to-rem(14px); 
-    background-color: var(--blue-25-light);
+    background-color: var(--dinamo);
     font-family: 'Ubuntu', sans-serif;
+    color: var(--white);
 }
 
 :root {
+    @include color-pallete($dinamo-blue, "dinamo");
+    @include color-pallete($dinamo-red, "dinamo-red");
+    @include color-pallete($dinamo-yellow, "dinamo-yellow");
     @include color-pallete($blue, "blue");
     @include color-pallete($green, "green");
     @include color-pallete($red, "red");
@@ -28,10 +32,11 @@ body {
         padding: 6px;
         margin: 6px;
         border-radius: 8px;
-        border: solid 1px var(--black);
+        border: solid 1px var(--white);
         font-size: var(--normal-font-size);
         min-width: px-to-vw(350px);
-        background-color: var(--blue-25-light);
+        background-color: transparent;
+        color: var(--white);
 
         &::placeholder {
             color: var(--white-30-dark);
@@ -89,18 +94,22 @@ body {
         }
     }
 
+    svg {
+        fill: var(--dinamo);
+    }
+
     table {
 
         thead {
             th {
-                border-bottom: solid 1px black;
+                border-bottom: solid 1px var(--white);
             }
         }
 
         td, th {
             height: 40px;
             border-left: solid 1px;
-            border-color: var(--black);
+            border-color: var(--white);
             text-align: center;
 
             &:first-child {
@@ -116,29 +125,15 @@ body {
     }
 
     button {
-        background-color: var(--yellow-15-dark);
+        background-color: var(--dinamo-red);
         padding: 7px 16px;
         
-        color: var(--black);
+        color: var(--white);
         font-weight: 700;
         font-size: var(--normal-font-size);
 
-        border: solid 2px var(--yellow-15-dark);
+        border: solid 2px var(--dinamo-red);
         border-radius: 16px;
-
-        &.textual {
-            border: none;
-            background-color: transparent;
-            color: var(--black);
-
-            &:hover {
-                box-shadow: none;
-            }
-
-            &:disabled {
-                color: var(--white-30-dark);
-            }
-        }
 
         &:focus {
             outline: none;
@@ -146,16 +141,33 @@ body {
 
         &:hover {
             cursor: pointer;
-            box-shadow: 0 0 8px 2px var(--yellow-30-light);
+            box-shadow: 0 0 8px 2px var(--white-30-dark);
         }
 
         &:disabled {
-            color: var(--white-30-dark);
+            color: var(--black-40-light);
+            background-color: var(--dinamo-red-20-light);
+            border: solid 2px var(--dinamo-red-20-light);      
         }
 
         &:disabled:hover {
             cursor: not-allowed;
             box-shadow: none;
+        }
+
+        &.textual {
+            border: none;
+            background-color: transparent;
+            text-decoration: underline;
+
+            &:hover {
+                box-shadow: none;
+            }
+
+            &:disabled {
+                text-decoration: none;
+                color: var(--black-40-light);    
+            }
         }
     }
 

@@ -1,16 +1,18 @@
 ﻿
+using IptvConverter.Business.Config;
 using IptvConverter.Business.Models;
+using IptvConverter.Business.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace IptvConverter.Business.Services.Interfaces
+namespace IptvConverter.Business.Services
 {
     public class PlaylistService : IPlaylistService
     {
-        public async Task<List<IptvChannelExtended>> ReadPlaylist(IFormFile playlistFile)
+        public async Task<List<IptvChannelExtended>> ReadPlaylist(IFormFile playlistFile, bool tryFillCustomData = true)
         {
             var result = new List<IptvChannelExtended>();
 
@@ -26,7 +28,7 @@ namespace IptvConverter.Business.Services.Interfaces
                 {
                     if (line.Contains("#EXTINF"))
                     {
-                        var channel = ParseIntoChannel(line);
+                        var channel = ParseIntoChannel(line, tryFillCustomData);
                         channel.Uri = reader.ReadLine();
                         result.Add(channel);
                     }
@@ -38,12 +40,12 @@ namespace IptvConverter.Business.Services.Interfaces
             return result;
         }
 
-        public async Task<List<IptvChannelExtended>> ProcessPlaylist(IFormFile playlistFile)
+        public async Task<List<IptvChannelExtended>> ProcessPlaylist(IFormFile playlistFile, bool tryFillCustomData = true)
         {
-            var readPlayList = await ReadPlaylist(playlistFile);
+            var readPlayList = await ReadPlaylist(playlistFile, tryFillCustomData);
 
             var processedChannels = new List<IptvChannelExtended>();
-            foreach (var idToInsert in Config.Config.Instance.GetChannelsOrder())
+            foreach (var idToInsert in GeneralConfig.Instance.Config.ChannelsOrder)
             {
                 var channelsToProcess = readPlayList.Where(x => x.ID == idToInsert).ToList();
                 foreach (var channel in channelsToProcess)
@@ -121,7 +123,7 @@ namespace IptvConverter.Business.Services.Interfaces
             return fs.ToArray();
         }
 
-        public IptvChannelExtended ParseIntoChannel(string line)
+        public IptvChannelExtended ParseIntoChannel(string line, bool includeCustomSettings = true)
         {
             var channel = new IptvChannelExtended();
 
@@ -131,6 +133,11 @@ namespace IptvConverter.Business.Services.Interfaces
             channel.Group = ChannelHelper.ExtractGroup(line);
             channel.Logo = ChannelHelper.ExtractGroup(line);
 
+            if(!includeCustomSettings)
+            {
+                return channel;
+            }
+
             var match = Config.ChannelsConfig.Instance.MatchChannelByName(channel.Name);
             if(match != null)
             {
@@ -138,6 +145,7 @@ namespace IptvConverter.Business.Services.Interfaces
                 channel.Country = match.Country;
                 channel.ID = match.ID;
                 channel.ShouldCollect = match.ShouldCollect;
+                channel.Logo = !string.IsNullOrEmpty(match.Logo) ? match.Logo : channel.Logo;
             }
             else
             {

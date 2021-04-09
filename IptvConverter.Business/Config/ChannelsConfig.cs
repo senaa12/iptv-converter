@@ -1,39 +1,26 @@
 ﻿using IptvConverter.Business.Models;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace IptvConverter.Business.Config
 {
-    public class ChannelsConfig
+    public class ChannelsConfig : ConfigBase<List<IptvChannelExtended>>
     {
+        protected override string FileName => "channelsConfig.json";
+
+        public ChannelsConfig() : base()
+        {
+
+        }
+
         private static ChannelsConfig _instance;
-        private List<IptvChannelExtended> _config;
-
-        private ChannelsConfig()
-        {
-            _config = loadJson();
-        }
-
-        private List<IptvChannelExtended> loadJson()
-        {
-            List<IptvChannelExtended> items;
-            using (StreamReader r = new StreamReader(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Config", "channelsConfig.json")))
-            {
-                string json = r.ReadToEnd();
-                items = JsonConvert.DeserializeObject<List<IptvChannelExtended>>(json);
-            }
-            return items;
-        }
-
-        public static ChannelsConfig Instance 
+        public static ChannelsConfig Instance
         {
             get
             {
-                if(_instance == null)
+                if (_instance == null)
                 {
                     _instance = new ChannelsConfig();
                 }
@@ -42,14 +29,9 @@ namespace IptvConverter.Business.Config
             }
         }
 
-        public List<IptvChannelExtended> GetMyConfig()
-        {
-            return _config;
-        }
-
         public IptvChannelExtended GetById(int channelId)
         {
-            return _config.FirstOrDefault(x => x.ID == channelId);
+            return _instance.Config.FirstOrDefault(x => x.ID == channelId);
         }
 
         /// <summary>
@@ -60,7 +42,7 @@ namespace IptvConverter.Business.Config
         public IptvChannelExtended MatchChannelByName(string name)
         {
             IptvChannelExtended channel = new IptvChannelExtended();
-            var copy = _config;
+            var copy = _instance.Config;
             IEnumerable<IptvChannelExtended> test;
 
             var country = extractCountryFromString(name);
@@ -69,7 +51,7 @@ namespace IptvConverter.Business.Config
                 return null;
             }
 
-            var nameMatch = copy.FirstOrDefault(c => 
+            var nameMatch = copy.FirstOrDefault(c =>
                 removeHdFhdSigns(c.Name).ToLower() == removeHdFhdSigns(name).ToLower() ||
                 removeHdFhdSigns(c.EpgId).ToLower() == removeHdFhdSigns(name).ToLower()
                 );

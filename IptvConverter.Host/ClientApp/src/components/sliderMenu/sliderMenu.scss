@@ -13,8 +13,8 @@
         text-align: center;
 
         &.active {
-            font-weight: 700;
-            color: var(--black);
+            font-weight: 900;
+            color: var(--dinamo-yellow);
         }
     }
 
@@ -22,7 +22,7 @@
         position: absolute;
         bottom: -2px;
         height: 2px;
-        background-color: var(--black);
+        background-color: var(--dinamo-yellow);
 
         transition: all .2s cubic-bezier(.25, .25, .25, 1.25);
     }

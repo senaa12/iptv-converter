@@ -7,7 +7,7 @@
 //----------------------
 // ReSharper disable InconsistentNaming
 
-import { BaseClient } from './baseClient';
+import { BaseClient } from "./baseClient";
 
 export class PlaylistClient extends BaseClient {
     private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
@@ -106,11 +106,16 @@ export class PlaylistClient extends BaseClient {
     }
 
     /**
+     * @param fillData (optional) 
      * @param playlist (optional) 
      * @return Success
      */
-    preview(playlist: FileParameter | null | undefined): Promise<IptvChannelExtendedListAjaxResponse> {
-        let url_ = this.baseUrl + "/api/playlist/preview";
+    preview(fillData: boolean | undefined, playlist: FileParameter | null | undefined): Promise<IptvChannelExtendedListAjaxResponse> {
+        let url_ = this.baseUrl + "/api/playlist/preview?";
+        if (fillData === null)
+            throw new Error("The parameter 'fillData' cannot be null.");
+        else if (fillData !== undefined)
+            url_ += "fillData=" + encodeURIComponent("" + fillData) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = new FormData();

@@ -579,6 +579,126 @@
     "Country": "srb"
   },
   {
+    "ID": 59,
+    "EpgId": "Cinestar TV",
+    "Name": "Cinestar TV",
+    "Pattern": "Cinestar TV",
+    "Group": "Movies",
+    "Logo": "",
+    "ShouldCollect": true,
+    "Country": ""
+  },
+  {
+    "ID": 60,
+    "EpgId": "Cinestar TV 2",
+    "Name": "Cinestar TV 2",
+    "Pattern": "Cinestar TV 2",
+    "Group": "Movies",
+    "Logo": "",
+    "ShouldCollect": true,
+    "Country": ""
+  },
+  {
+    "ID": 62,
+    "EpgId": "24 Kitchen",
+    "Name": "24 Kitchen",
+    "Pattern": "24 Kitchen",
+    "Group": "Generic",
+    "Logo": "",
+    "ShouldCollect": true,
+    "Country": ""
+  },
+  {
+    "ID": 63,
+    "EpgId": "Food Network",
+    "Name": "Food Network",
+    "Pattern": "Food Network",
+    "Group": "Generic",
+    "Logo": "",
+    "ShouldCollect": true,
+    "Country": ""
+  },
+  {
+    "ID": 64,
+    "EpgId": "HNTV",
+    "Name": "HNTV",
+    "Pattern": "HNTV",
+    "Group": "Sport",
+    "Logo": "",
+    "ShouldCollect": true,
+    "Country": ""
+  },
+  {
+    "ID": 65,
+    "EpgId": "NBA TV",
+    "Name": "NBA TV",
+    "Pattern": "NBA TV",
+    "Group": "Sport",
+    "Logo": "",
+    "ShouldCollect": true,
+    "Country": ""
+  },
+  {
+    "ID": 66,
+    "EpgId": "MTV Hits",
+    "Name": "MTV Hits",
+    "Pattern": "MTV Hits",
+    "Group": "Music",
+    "Logo": "",
+    "ShouldCollect": true,
+    "Country": ""
+  },
+  {
+    "ID": 66,
+    "EpgId": "MTV",
+    "Name": "MTV",
+    "Pattern": "MTV",
+    "Group": "Music",
+    "Logo": "",
+    "ShouldCollect": true,
+    "Country": ""
+  },
+  {
+    "ID": 67,
+    "EpgId": "VH1 Classic",
+    "Name": "VH1 Classic",
+    "Pattern": "VH1 Classic Classics TV",
+    "Group": "Music",
+    "Logo": "",
+    "ShouldCollect": true,
+    "Country": ""
+  },
+  {
+    "ID": 68,
+    "EpgId": "BBC 1",
+    "Name": "BBC 1",
+    "Pattern": "BBC 1",
+    "Group": "Generic",
+    "Logo": "",
+    "ShouldCollect": true,
+    "Country": ""
+  },
+  {
+    "ID": 69,
+    "EpgId": "BBC 2",
+    "Name": "BBC 2",
+    "Pattern": "BBC 2",
+    "Group": "Generic",
+    "Logo": "",
+    "ShouldCollect": true,
+    "Country": ""
+  },
+  {
+    "ID": 70,
+    "EpgId": "TNT",
+    "Name": "TNT",
+    "Pattern": "TNT",
+    "Group": "Generic",
+    "Logo": "",
+    "ShouldCollect": true,
+    "Country": ""
+  },
+  {
     "ID": -1,
     "EpgId": "",
     "Name": "",
