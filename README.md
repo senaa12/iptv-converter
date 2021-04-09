@@ -11,8 +11,3 @@ Run BE and FE separetly.
 * `IptvConverter.Business/Config/channelsConfig.json` - channels JSON config, contains filled EPG Ids, Logos, matching pattern words
 
 * `IptvConverter.Business/Config/config.json` - initial channels order.
-
-## EPG LINKS
-
-* Croatian: [http://cdn.iptvhr.net/tvdata/guide.xml](http://cdn.iptvhr.net/tvdata/guide.xml)
-
