@@ -12,7 +12,7 @@ namespace IptvConverter.Business
     {
         public static IServiceCollection AddService(this IServiceCollection services)
         {
-            var serviceTypes = System.Reflection.Assembly.GetAssembly(typeof(IAppService)).GetTypes()
+            var serviceTypes = System.Reflection.Assembly.GetAssembly(typeof(IPlaylistService)).GetTypes()
                     .Where(t => t.Namespace != null && t.Name.EndsWith("Service"));
 
             foreach (var intfc in serviceTypes.Where(t => t.IsInterface))

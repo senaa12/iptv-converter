@@ -2,7 +2,7 @@ import React, { useCallback, useState } from 'react';
 import FileInput from '../components/input/fileInput';
 import Button from '../components/button/button';
 import { IptvChannelsExtendedWithState } from '../models/channels';
-import { IptvChannel, PlaylistClient } from '../services/services';
+import { IptvChannel, AppClient } from '../services/services';
 import Table from './table';
 import SliderMenu from '../components/sliderMenu/sliderMenu';
 import Loading from '../components/loading/loading';
@@ -35,8 +35,8 @@ const app: React.FC = () => {
         async (fillData: boolean = true) => {
             setLoading(true);
 
-            const playlistClient = new PlaylistClient();
-            const result = await playlistClient.preview(fillData, { fileName: (file as any).name, data: file as any });
+            const appClient = new AppClient();
+            const result = await appClient.preview(fillData, { fileName: (file as any).name, data: file as any });
 
             setChannels(result.data?.map((val, index) => {
                 return new IptvChannelsExtendedWithState({ channelUniqueId: index, includeInFinal: (val.recognized && val.hd) ?? false, ...val });
@@ -63,8 +63,8 @@ const app: React.FC = () => {
                 new IptvChannel({ epgId: x.epgId, extInf: x.extInf, group: x.group, id: x.id, logo: x.logo, name: x.name, uri: x.uri }) 
             ))
 
-            const playlistClient = new PlaylistClient();
-            const fileResult = await playlistClient.channels(channelsToGenerate);
+            const appClient = new AppClient();
+            const fileResult = await appClient.fromChannels(channelsToGenerate);
 
             let a = document.createElement("a") 
             let blobURL = URL.createObjectURL(fileResult.data)
@@ -84,7 +84,6 @@ const app: React.FC = () => {
         () => {
             setLoading(true);
 
-            console.log(channels)
             localStorage.setItem('channels', JSON.stringify(channels?.map(x => new IptvChannelsExtendedWithState(x))));
             setChannels([
                 ...channels?.filter(x => x.includeInFinal).map(x => ( new IptvChannelsExtendedWithState(x) ))!

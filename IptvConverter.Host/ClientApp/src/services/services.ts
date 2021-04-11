@@ -9,7 +9,7 @@
 
 import { BaseClient } from "./baseClient";
 
-export class PlaylistClient extends BaseClient {
+export class AppClient extends BaseClient {
     private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
@@ -24,8 +24,8 @@ export class PlaylistClient extends BaseClient {
      * @param playlist (optional) 
      * @return Success
      */
-    file(playlist: FileParameter | null | undefined): Promise<FileResponse> {
-        let url_ = this.baseUrl + "/api/playlist/generate/file";
+    fromFile(playlist: FileParameter | null | undefined): Promise<FileResponse> {
+        let url_ = this.baseUrl + "/api/playlist/from-file";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = new FormData();
@@ -43,11 +43,11 @@ export class PlaylistClient extends BaseClient {
         return this.transformOptions(options_).then(transformedOptions_ => {
             return this.http.fetch(url_, transformedOptions_);
         }).then((_response: Response) => {
-            return this.processFile(_response);
+            return this.processFromFile(_response);
         });
     }
 
-    protected processFile(response: Response): Promise<FileResponse> {
+    protected processFromFile(response: Response): Promise<FileResponse> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200 || status === 206) {
@@ -67,8 +67,8 @@ export class PlaylistClient extends BaseClient {
      * @param body (optional) 
      * @return Success
      */
-    channels(body: IptvChannel[] | null | undefined): Promise<FileResponse> {
-        let url_ = this.baseUrl + "/api/playlist/generate/channels";
+    fromChannels(body: IptvChannel[] | null | undefined): Promise<FileResponse> {
+        let url_ = this.baseUrl + "/api/playlist/from-channels";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(body);
@@ -85,11 +85,11 @@ export class PlaylistClient extends BaseClient {
         return this.transformOptions(options_).then(transformedOptions_ => {
             return this.http.fetch(url_, transformedOptions_);
         }).then((_response: Response) => {
-            return this.processChannels(_response);
+            return this.processFromChannels(_response);
         });
     }
 
-    protected processChannels(response: Response): Promise<FileResponse> {
+    protected processFromChannels(response: Response): Promise<FileResponse> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200 || status === 206) {
@@ -153,6 +153,98 @@ export class PlaylistClient extends BaseClient {
             });
         }
         return Promise.resolve<IptvChannelExtendedListAjaxResponse>(<any>null);
+    }
+
+    /**
+     * @param source (optional) 
+     * @param fillData (optional) 
+     * @return Success
+     */
+    fromSource(source: string | null | undefined, fillData: boolean | undefined): Promise<FileResponse> {
+        let url_ = this.baseUrl + "/api/epg/from-source?";
+        if (source !== undefined && source !== null)
+            url_ += "source=" + encodeURIComponent("" + source) + "&";
+        if (fillData === null)
+            throw new Error("The parameter 'fillData' cannot be null.");
+        else if (fillData !== undefined)
+            url_ += "fillData=" + encodeURIComponent("" + fillData) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ = <RequestInit>{
+            method: "POST",
+            headers: {
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.processFromSource(_response);
+        });
+    }
+
+    protected processFromSource(response: Response): Promise<FileResponse> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200 || status === 206) {
+            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
+            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
+            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
+            return response.blob().then(blob => { return { fileName: fileName, data: blob, status: status, headers: _headers }; });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<FileResponse>(<any>null);
+    }
+
+    /**
+     * @param source (optional) 
+     * @param fillData (optional) 
+     * @return Success
+     */
+    preview2(source: string | null | undefined, fillData: boolean | undefined): Promise<EpgChannelExtendedListAjaxResponse> {
+        let url_ = this.baseUrl + "/api/epg/preview?";
+        if (source !== undefined && source !== null)
+            url_ += "source=" + encodeURIComponent("" + source) + "&";
+        if (fillData === null)
+            throw new Error("The parameter 'fillData' cannot be null.");
+        else if (fillData !== undefined)
+            url_ += "fillData=" + encodeURIComponent("" + fillData) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ = <RequestInit>{
+            method: "POST",
+            headers: {
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.processPreview2(_response);
+        });
+    }
+
+    protected processPreview2(response: Response): Promise<EpgChannelExtendedListAjaxResponse> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = EpgChannelExtendedListAjaxResponse.fromJS(resultData200);
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<EpgChannelExtendedListAjaxResponse>(<any>null);
     }
 }
 
@@ -353,6 +445,106 @@ export interface IIptvChannelExtendedListAjaxResponse {
     resultType?: AjaxResponseTypeEnum;
     errorMessage?: string | undefined;
     data?: IptvChannelExtended[] | undefined;
+}
+
+export class EpgChannelExtended implements IEpgChannelExtended {
+    name?: string | undefined;
+    logo?: string | undefined;
+    url?: string | undefined;
+    channelId?: number | undefined;
+
+    constructor(data?: IEpgChannelExtended) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.name = _data["name"];
+            this.logo = _data["logo"];
+            this.url = _data["url"];
+            this.channelId = _data["channelId"];
+        }
+    }
+
+    static fromJS(data: any): EpgChannelExtended {
+        data = typeof data === 'object' ? data : {};
+        let result = new EpgChannelExtended();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["name"] = this.name;
+        data["logo"] = this.logo;
+        data["url"] = this.url;
+        data["channelId"] = this.channelId;
+        return data; 
+    }
+}
+
+export interface IEpgChannelExtended {
+    name?: string | undefined;
+    logo?: string | undefined;
+    url?: string | undefined;
+    channelId?: number | undefined;
+}
+
+export class EpgChannelExtendedListAjaxResponse implements IEpgChannelExtendedListAjaxResponse {
+    resultType?: AjaxResponseTypeEnum;
+    errorMessage?: string | undefined;
+    data?: EpgChannelExtended[] | undefined;
+
+    constructor(data?: IEpgChannelExtendedListAjaxResponse) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.resultType = _data["resultType"];
+            this.errorMessage = _data["errorMessage"];
+            if (Array.isArray(_data["data"])) {
+                this.data = [] as any;
+                for (let item of _data["data"])
+                    this.data!.push(EpgChannelExtended.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): EpgChannelExtendedListAjaxResponse {
+        data = typeof data === 'object' ? data : {};
+        let result = new EpgChannelExtendedListAjaxResponse();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["resultType"] = this.resultType;
+        data["errorMessage"] = this.errorMessage;
+        if (Array.isArray(this.data)) {
+            data["data"] = [];
+            for (let item of this.data)
+                data["data"].push(item.toJSON());
+        }
+        return data; 
+    }
+}
+
+export interface IEpgChannelExtendedListAjaxResponse {
+    resultType?: AjaxResponseTypeEnum;
+    errorMessage?: string | undefined;
+    data?: EpgChannelExtended[] | undefined;
 }
 
 export interface FileParameter {

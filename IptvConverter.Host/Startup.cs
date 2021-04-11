@@ -24,6 +24,8 @@ namespace IptvConverter.Host
         {
             services.AddControllers().AddNewtonsoftJson();
 
+            services.AddHttpClient();
+
             services.AddService();
 
             services.AddSwagger();
