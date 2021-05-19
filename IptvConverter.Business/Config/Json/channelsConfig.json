@@ -282,7 +282,7 @@
   {
     "ID": 29,
     "EpgId": "FOX TV",
-    "Name": "FOX",
+    "Name": "FOX TV",
     "Pattern": "FOX TV HR",
     "Group": "Movies",
     "Logo": "https://i.imgur.com/nccZPW9.png",
@@ -584,7 +584,7 @@
     "Name": "Cinestar TV",
     "Pattern": "Cinestar TV",
     "Group": "Movies",
-    "Logo": "",
+    "Logo": "https://i.imgur.com/wGgF0js.png",
     "ShouldCollect": true,
     "Country": ""
   },
@@ -594,7 +594,7 @@
     "Name": "Cinestar TV 2",
     "Pattern": "Cinestar TV 2",
     "Group": "Movies",
-    "Logo": "",
+    "Logo": "https://i.imgur.com/f91hquz.png",
     "ShouldCollect": true,
     "Country": ""
   },
@@ -604,7 +604,7 @@
     "Name": "24 Kitchen",
     "Pattern": "24 Kitchen",
     "Group": "Generic",
-    "Logo": "",
+    "Logo": "https://i.imgur.com/eSX55lN.png",
     "ShouldCollect": true,
     "Country": ""
   },
@@ -614,7 +614,7 @@
     "Name": "Food Network",
     "Pattern": "Food Network",
     "Group": "Generic",
-    "Logo": "",
+    "Logo": "https://i.imgur.com/KPC1Jk4.png",
     "ShouldCollect": true,
     "Country": ""
   },
@@ -624,7 +624,7 @@
     "Name": "HNTV",
     "Pattern": "HNTV",
     "Group": "Sport",
-    "Logo": "",
+    "Logo": "https://i.imgur.com/BAC6HJ7.png",
     "ShouldCollect": true,
     "Country": ""
   },
@@ -634,7 +634,7 @@
     "Name": "NBA TV",
     "Pattern": "NBA TV",
     "Group": "Sport",
-    "Logo": "",
+    "Logo": "https://i.imgur.com/sVU6zx2.png",
     "ShouldCollect": true,
     "Country": ""
   },
@@ -644,7 +644,7 @@
     "Name": "MTV Hits",
     "Pattern": "MTV Hits",
     "Group": "Music",
-    "Logo": "",
+    "Logo": "https://i.imgur.com/id6vZAi.png",
     "ShouldCollect": true,
     "Country": ""
   },
@@ -654,7 +654,7 @@
     "Name": "MTV",
     "Pattern": "MTV",
     "Group": "Music",
-    "Logo": "",
+    "Logo": "https://i.imgur.com/qSwrsfc.png",
     "ShouldCollect": true,
     "Country": ""
   },
@@ -664,7 +664,7 @@
     "Name": "VH1 Classic",
     "Pattern": "VH1 Classic Classics TV",
     "Group": "Music",
-    "Logo": "",
+    "Logo": "https://i.imgur.com/mXbX4I3.png",
     "ShouldCollect": true,
     "Country": ""
   },
@@ -674,7 +674,7 @@
     "Name": "BBC 1",
     "Pattern": "BBC 1",
     "Group": "Generic",
-    "Logo": "",
+    "Logo": "https://i.imgur.com/W6sMZwo.png",
     "ShouldCollect": true,
     "Country": ""
   },
@@ -684,7 +684,7 @@
     "Name": "BBC 2",
     "Pattern": "BBC 2",
     "Group": "Generic",
-    "Logo": "",
+    "Logo": "https://i.imgur.com/GBLZ8mV.png",
     "ShouldCollect": true,
     "Country": ""
   },
@@ -694,9 +694,19 @@
     "Name": "TNT",
     "Pattern": "TNT",
     "Group": "Generic",
-    "Logo": "",
+    "Logo": "https://i.imgur.com/OKpJgsw.png",
     "ShouldCollect": true,
     "Country": ""
+  },
+  {
+    "ID": 71,
+    "EpgId": "Arena Sport 6",
+    "Name": "Arena Sport 6 HR",
+    "Pattern": "Arena Sport 6 HR",
+    "Group": "Sport",
+    "Logo": "https://i.imgur.com/iNSGyTV.png",
+    "ShouldCollect": true,
+    "Country": "hr"
   },
   {
     "ID": -1,

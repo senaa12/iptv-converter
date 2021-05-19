@@ -7,6 +7,10 @@ using Microsoft.Extensions.Hosting;
 using IptvConverter.Host.Swagger;
 using IptvConverter.Host.Middleware;
 using IptvConverter.Business;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.FileProviders;
+using System.IO;
+using IptvConverter.Business.Services;
 
 namespace IptvConverter.Host
 {
@@ -71,6 +75,12 @@ namespace IptvConverter.Host
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapDefaultControllerRoute();
+            });
+
+            app.UseStaticFiles(new StaticFileOptions()
+            {
+                FileProvider = new PhysicalFileProvider(FileService.GetEpgFolderPath(env.IsDevelopment(), env.ContentRootPath)),
+                RequestPath = new PathString($"/sources")
             });
 
             app.Use(async (ctx, next) =>

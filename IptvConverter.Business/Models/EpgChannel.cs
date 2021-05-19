@@ -13,5 +13,17 @@ namespace IptvConverter.Business.Models
         public string Logo { get; set; }
 
         public string Url { get; set; }
+
+        public string ToXmlString()
+        {
+            var baseString = $"<channel id=\"{ChannelEpgId}\" />\n";
+            baseString = $"{baseString}<display-name>{Name}</display-name>\n";
+            if (!string.IsNullOrEmpty(Url))
+            {
+                baseString = $"{baseString}<url>{Url}</url>\n";
+            }
+
+            return baseString;
+        }
     }
 }

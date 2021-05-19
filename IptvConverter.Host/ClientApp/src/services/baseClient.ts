@@ -16,6 +16,6 @@ export abstract class BaseClient {
     }
 
     protected getBaseUrl(defaultUrl: string, baseUrl?: string): string {
-		return "https://localhost:44313"
+		return process.env.NODE_ENV === 'development' ? "https://localhost:44313" : window.origin;
     }
  }

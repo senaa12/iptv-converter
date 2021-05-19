@@ -1,21 +1,28 @@
-﻿using IptvConverter.Business.Models;
+﻿using IptvConverter.Business.Helpers;
+using IptvConverter.Business.Models;
 using IptvConverter.Business.Services.Interfaces;
+using IptvConverter.Business.Utils;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
-using System.Xml;
 
 namespace IptvConverter.Business.Services
 {
     public class EpgService : IEpgService
     {
         private readonly IHttpClientFactory _httpClientFactory;
-        
-        public EpgService(IHttpClientFactory httpClientFactory)
+
+        private readonly string _uploadFolder;
+
+        public EpgService(IHostingEnvironment enviroment, IHttpClientFactory httpClientFactory)
         {
+            _uploadFolder = FileService.GetEpgFolderPath(enviroment.IsDevelopment(), enviroment.ContentRootPath);
             _httpClientFactory = httpClientFactory;
         }
 
@@ -26,7 +33,7 @@ namespace IptvConverter.Business.Services
             var client = _httpClientFactory.CreateClient();
             var response = await client.SendAsync(request);
 
-            var list = parseStream(await response.Content.ReadAsStreamAsync());
+            var list = new XmlEpgParser(await response.Content.ReadAsStreamAsync()).Channels;
             if(!fillCustomData)
             {
                 return list.Select(x => new EpgChannelExtended(x, null)).ToList();
@@ -36,91 +43,86 @@ namespace IptvConverter.Business.Services
             {
                 var match = Config.ChannelsConfig.Instance.MatchChannelByName(x.Name);
                 return new EpgChannelExtended(x, match?.ID);
-            }).OrderBy(x => x.ChannelId).ToList();
+            }).OrderBy(x => x.ChannelId).ThenBy(x => x.Name).ToList();
         }
 
-        private List<EpgChannel> parseStream(Stream streamInput)
+        public async Task<List<EpgChannelExtended>> GetEpgServiceChannelsFromFile(IFormFile file, bool fillCustomData = true)
         {
-            var result = new List<EpgChannel>();
-            EpgChannel _currentItem = null;
-            var displayNameTagOpen = false;
-            var urlTagOpen = false;
+            var list = new XmlEpgParser(file.OpenReadStream()).Channels;
 
-            using (var reader = new XmlTextReader(streamInput))
+            if (!fillCustomData)
             {
-                while (reader.Read())
-                {
-                    switch (reader.NodeType)
-                    {
-                        case XmlNodeType.Element: // The node is an element.
-                            if(reader.Name.Equals("channel"))
-                            {
-                                _currentItem = new EpgChannel();
-                                while (reader.MoveToNextAttribute())
-                                {
-                                    if (reader.Name.Equals("id"))
-                                    {
-                                        _currentItem.ChannelEpgId = reader.Value;
-                                        break;
-                                    }
-                                }
-                                break;
-                            }
-
-                            if(reader.Name.Equals("display-name") && _currentItem != null)
-                            {
-                                displayNameTagOpen = true;
-                                break;
-                            }
-
-                            if (reader.Name.Equals("icon") && _currentItem != null)
-                            {
-                                while(reader.MoveToNextAttribute())
-                                {
-                                    if(reader.Name.Equals("src"))
-                                    {
-                                        _currentItem.Logo = reader.Value;
-                                        break;
-                                    }
-                                }
-                            }
-
-                            if(reader.Name.Equals("url") && _currentItem != null)
-                            {
-                                urlTagOpen = true;
-                                break;
-                            }
-                            break;
-                        case XmlNodeType.Text:
-                            if (displayNameTagOpen)
-                            {
-                                _currentItem.Name = reader.Value;
-                                displayNameTagOpen = false;
-                                break;
-                            }
-
-                            if (urlTagOpen)
-                            {
-                                _currentItem.Url = reader.Value;
-                                urlTagOpen = false;
-                                break;
-                            }
-
-                            break;    
-                        case XmlNodeType.EndElement: 
-                            if(reader.Name.Equals("channel") && _currentItem != null)
-                            {
-                                result.Add(_currentItem);
-                                _currentItem = null;
-                                break;
-                            }
-
-                            break;
-                    }
-                }
+                return list.Select(x => new EpgChannelExtended(x, null)).ToList();
             }
 
-            return result;
+            return list.Select(x =>
+            {
+                var match = Config.ChannelsConfig.Instance.MatchChannelByName(x.Name);
+                return new EpgChannelExtended(x, match?.ID);
+            }).OrderBy(x => x.ChannelId).ThenBy(x => x.Name).ToList();
+
+        }
+
+        public async Task<XmlEpgParser> FetchEpgGzip(string url)
+        {
+            var request = new HttpRequestMessage(HttpMethod.Get, url);
+
+            var client = _httpClientFactory.CreateClient();
+            var response = await client.SendAsync(request);
+
+            using (GZipStream decompressionStream = new GZipStream(await response.Content.ReadAsStreamAsync(), CompressionMode.Decompress))
+            {
+                return new XmlEpgParser(decompressionStream);
+            }
+        }
+
+        public async Task GenerateXmlEpgFile()
+        {
+            if (!shouldGenerateEpg())
+                return;
+
+            using (FileStream fileStream = File.Create(Path.Combine(_uploadFolder, "guide.xml")))
+            {
+                   var phoenixEpg = await FetchEpgGzip("https://epg.phoenixrebornbuild.com.hr/");
+
+                    var epgXml = XmlEpg.Create();
+                    epgXml.AddChannels(phoenixEpg.Channels, phoenixEpg.Programe);
+
+                    await fileStream.WriteAsync(epgXml.GenerateEpgFile());
+                    await fileStream.FlushAsync();
+            }
+
+            writeLastGeneratedDateTime();
+        }
+
+        private bool shouldGenerateEpg()
+        {
+            var lastCheckedPath = Path.Combine(_uploadFolder, "last_checked");
+            if (!File.Exists(lastCheckedPath))
+                return true;
+
+            var currentZgDate = DateTimeUtils.GetZagrebCurrentDateTime();
+            using (StreamReader r = new StreamReader(lastCheckedPath))
+            {
+                var dateCheck = r.ReadToEndAsync().GetAwaiter().GetResult();
+                return DateTime.Parse(dateCheck).Date != currentZgDate.Date;
+            }
+        }
+
+        private void writeLastGeneratedDateTime()
+        {
+            var fs = new MemoryStream();
+            using (var writer = new StreamWriter(fs))
+            {
+                writer.WriteLine(DateTimeUtils.GetZagrebCurrentDateTime().ToString());
+            }
+
+            using (FileStream fileStream = File.Create(Path.Combine(_uploadFolder, "last_checked")))
+            {
+                fileStream.Write(fs.ToArray());
+
+                fileStream.FlushAsync().GetAwaiter().GetResult();
+            }
         }
     }
 }

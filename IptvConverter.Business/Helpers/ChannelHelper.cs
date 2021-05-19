@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace IptvConverter.Business
+namespace IptvConverter.Business.Helpers
 {
     public static class ChannelHelper
     {
