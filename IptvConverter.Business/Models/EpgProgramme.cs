@@ -29,8 +29,8 @@ namespace IptvConverter.Business.Models
         {
             get
             {
-                var baseDate = $"{Start.Substring(0, 4)}-{Start.Substring(4, 2)}-{Start.Substring(6, 2)}";
-                return DateTime.Parse($"{baseDate}T{Start.Substring(8, 2)}:{Start.Substring(10, 2)}:{Start.Substring(12, 2)}{Start.Split(' ')[1]}");
+                var baseDate = $"{End.Substring(0, 4)}-{End.Substring(4, 2)}-{End.Substring(6, 2)}";
+                return DateTime.Parse($"{baseDate}T{End.Substring(8, 2)}:{End.Substring(10, 2)}:{End.Substring(12, 2)}{End.Split(' ')[1]}");
             }
             set
             {

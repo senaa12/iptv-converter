@@ -121,11 +121,12 @@ namespace IptvConverter.Business.Services
 
                 var foodN = await FetchXmlEpg($"https://mojtv.net/xmltv/service.ashx?kanal_id=265&date={zagrebTime.ToString("d.M.yyyy.")}");
                 epgXml.AddChannel(foodN.Channels.First(), foodN.Programe);
-                epgXml.AddHoursToProgrammeTimeForChannel("Food Network", 1);
 
                 var hbo1 = await FetchXmlEpg($"https://mojtv.net/xmltv/service.ashx?kanal_id=366&date={zagrebTime.ToString("d.M.yyyy.")}");
                 epgXml.AddChannel(hbo1.Channels.First(), hbo1.Programe);
-                epgXml.AddHoursToProgrammeTimeForChannel("HBO", 1);
+
+                var hbo2 = await FetchXmlEpg($"https://mojtv.net/xmltv/service.ashx?kanal_id=367&date={zagrebTime.ToString("d.M.yyyy.")}");
+                epgXml.AddChannel(hbo2.Channels.First(), hbo2.Programe);
 
                 #endregion
 

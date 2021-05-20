@@ -53,15 +53,15 @@ namespace IptvConverter.Business.Helpers
 
         private void filterOutChannel(EpgChannel channelToFilterOut)
         {
-            var existingChannel = _channels.FirstOrDefault(channelsMatchingFunction(channelToFilterOut.ChannelEpgId));
-            if (existingChannel == null)
-                existingChannel = _channels.FirstOrDefault(channelsMatchingFunction(channelToFilterOut.Name));
+            var existingChannel = _channels.Where(channelsMatchingFunction(channelToFilterOut.ChannelEpgId)).ToList();
+            if (existingChannel == null || existingChannel.Count == 0)
+                existingChannel = _channels.Where(channelsMatchingFunction(channelToFilterOut.Name)).ToList();
 
-            if (existingChannel == null)
+            if (existingChannel == null || existingChannel.Count == 0)
                 return;
 
-            _programme = _programme.Where(x => x.ChannelId != existingChannel.ChannelEpgId).ToList();
-            _channels = _channels.Where(x => x.ChannelEpgId != existingChannel.ChannelEpgId).ToList();
+            _programme = _programme.Where(x => existingChannel.FirstOrDefault(y => y.ChannelEpgId == x.ChannelId) == null).ToList();
+            _channels = _channels.Where(x => existingChannel.FirstOrDefault(y => y.ChannelEpgId == x.ChannelEpgId) == null).ToList();
         }
 
         public void AddHoursToProgrammeTimeForChannel(string channelId, int addHours)
