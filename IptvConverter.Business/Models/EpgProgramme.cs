@@ -1,5 +1,8 @@
-﻿using System;
+﻿using IptvConverter.Business.Utils;
+using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.Web;
 
 namespace IptvConverter.Business.Models
 {
@@ -14,6 +17,10 @@ namespace IptvConverter.Business.Models
                 var baseDate = $"{Start.Substring(0, 4)}-{Start.Substring(4, 2)}-{Start.Substring(6, 2)}";
                 return DateTime.Parse($"{baseDate}T{Start.Substring(8, 2)}:{Start.Substring(10, 2)}:{Start.Substring(12, 2)}{Start.Split(' ')[1]}");
             }
+            set
+            {
+                Start = $"{value.ToString("yyyyMMddHHmmss zzz")}";
+            }
         }
 
         public string End { get; set; }
@@ -22,8 +29,12 @@ namespace IptvConverter.Business.Models
         {
             get
             {
-                var baseDate = $"{End.Substring(0, 4)}-{End.Substring(4, 2)}-{End.Substring(6, 2)}";
-                return DateTime.Parse($"{baseDate}T{End.Substring(8, 2)}:{End.Substring(10, 2)}:{End.Substring(12, 2)}{End.Split(' ')[1]}");
+                var baseDate = $"{Start.Substring(0, 4)}-{Start.Substring(4, 2)}-{Start.Substring(6, 2)}";
+                return DateTime.Parse($"{baseDate}T{Start.Substring(8, 2)}:{Start.Substring(10, 2)}:{Start.Substring(12, 2)}{Start.Split(' ')[1]}");
+            }
+            set
+            {
+                End = $"{value.ToString("yyyyMMddHHmmss zzz")}";
             }
         }
 
@@ -44,8 +55,8 @@ namespace IptvConverter.Business.Models
         public string ToXmlString()
         {
             var baseString = $"<programme start=\"{Start}\" stop=\"{End}\" channel=\"{ChannelId}\">\n";
-            baseString = $"{baseString}<title lang=\"hr\">{Title}</title>\n";
-            baseString = $"{baseString}<desc lang=\"hr\">{Description}</desc>~n";
+            baseString = $"{baseString}<title lang=\"hr\">{HttpUtility.HtmlEncode(Title)}</title>\n";
+            baseString = $"{baseString}<desc lang=\"hr\">{HttpUtility.HtmlEncode(Description)}</desc>\n";
             if((Actors != null && Actors.Count > 0) || (Directors != null && Directors.Count > 0))
             {
                 baseString = $"{baseString}<credits>";
@@ -53,7 +64,7 @@ namespace IptvConverter.Business.Models
                 {
                     Directors.ForEach(c =>
                     {
-                        baseString = $"{baseString}<director>{c}</director>\n";
+                        baseString = $"{baseString}<director>{HttpUtility.HtmlEncode(c)}</director>\n";
                     });
                 }
 
@@ -61,7 +72,7 @@ namespace IptvConverter.Business.Models
                 {
                     Actors.ForEach(c =>
                     {
-                        baseString = $"{baseString}<actor>{c}</actor>\n";
+                        baseString = $"{baseString}<actor>{HttpUtility.HtmlEncode(c)}</actor>\n";
                     });
                 }
 
@@ -73,7 +84,7 @@ namespace IptvConverter.Business.Models
             {
                 Category.ForEach(c =>
                 {
-                    baseString = $"{baseString}<category lang=\"hr\">{c}</category>\n";
+                    baseString = $"{baseString}<category lang=\"hr\">{HttpUtility.HtmlEncode(c)}</category>\n";
                 });
             }
 

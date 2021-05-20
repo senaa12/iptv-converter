@@ -1,5 +1,6 @@
 ﻿using IptvConverter.Business.Models;
 using IptvConverter.Business.Utils;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -25,12 +26,6 @@ namespace IptvConverter.Business.Helpers
             return Programe.Where(x => x.ChannelId.Equals(channelId)).ToList();
         }
 
-        public bool ChannelExists(string channelId)
-        {
-            return Channels.Any(x =>
-                (string.IsNullOrEmpty(x.ChannelEpgId) && channelId.Equals(x.ChannelEpgId, System.StringComparison.OrdinalIgnoreCase))
-                && (string.IsNullOrEmpty(x.Name) && channelId.Equals(x.Name, System.StringComparison.OrdinalIgnoreCase)));
-        }
 
         /// <summary>
         /// return whole program from file, only for yesterday, today and tommorow
@@ -68,15 +63,13 @@ namespace IptvConverter.Business.Helpers
                                     }
                                     else if(reader.Name.Equals("channel"))
                                     {
-                                        if(!(_currentItem.StartDate.Date > currentTime.AddDays(2).Date || _currentItem.StartDate < currentTime.AddDays(2).Date))
-                                        {
-                                            _currentItem = null;
-                                        }
-                                        else
-                                        {
-                                            _currentItem.ChannelId = reader.Value;
-                                        }
+                                        _currentItem.ChannelId = reader.Value;
                                     }
+                                }
+
+                                if (!(_currentItem.StartDate.Date > currentTime.AddDays(2).Date || _currentItem.StartDate < currentTime.AddDays(2).Date))
+                                {
+                                    _currentItem = null;
                                 }
                                 break;
                             }
