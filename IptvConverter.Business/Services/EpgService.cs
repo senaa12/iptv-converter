@@ -168,6 +168,27 @@ namespace IptvConverter.Business.Services
                     epgXml.AddChannel(hbo3Tom.Channels.First(), fullProgramme);
                 }
 
+                if (!epgXml.ExistsProgrammeForChannel("EuroSport 1"))
+                {
+                    var es = await FetchXmlEpg($"https://mojtv.net/xmltv/service.ashx?kanal_id=493&date={zagrebTime.ToString("d.M.yyyy.")}");
+                    var esTom = await FetchXmlEpg($"https://mojtv.net/xmltv/service.ashx?kanal_id=493&date={zagrebTime.AddDays(1).ToString("d.M.yyyy.")}");
+                    fullProgramme = new List<EpgProgramme>();
+                    fullProgramme.AddRange(es.Programe);
+                    fullProgramme.AddRange(esTom.Programe);
+                    epgXml.AddChannel(es.Channels.First(), fullProgramme);
+                    epgXml.ChangeEpgIdForChannel("esp1.rs", "EuroSport 1");
+                }
+
+                if (!epgXml.ExistsProgrammeForChannel("EuroSport 2"))
+                {
+                    var es = await FetchXmlEpg($"https://mojtv.net/xmltv/service.ashx?kanal_id=494&date={zagrebTime.ToString("d.M.yyyy.")}");
+                    var esTom = await FetchXmlEpg($"https://mojtv.net/xmltv/service.ashx?kanal_id=494&date={zagrebTime.AddDays(1).ToString("d.M.yyyy.")}");
+                    fullProgramme = new List<EpgProgramme>();
+                    fullProgramme.AddRange(es.Programe);
+                    fullProgramme.AddRange(esTom.Programe);
+                    epgXml.AddChannel(es.Channels.First(), fullProgramme);
+                    epgXml.ChangeEpgIdForChannel("esp2.rs", "EuroSport 2");
+                }
 
                 #endregion
 
