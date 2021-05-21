@@ -34,7 +34,7 @@ namespace IptvConverter.Business.Helpers
             filterOutExistingChannel(channel);
 
             if (!channelHasProgramme(channel, programme))
-                return;
+                return this;
 
             _channels.Add(channel);
             _programme.AddRange(programme);
