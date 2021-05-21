@@ -1,4 +1,5 @@
 ﻿using IptvConverter.Business.Models;
+using IptvConverter.Business.Utils;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -30,7 +31,10 @@ namespace IptvConverter.Business.Helpers
 
         public XmlEpg AddChannel(EpgChannel channel, List<EpgProgramme> programme)
         {
-            filterOutChannel(channel);
+            filterOutExistingChannel(channel);
+
+            if (!channelHasProgramme(channel, programme))
+                return;
 
             _channels.Add(channel);
             _programme.AddRange(programme);
@@ -42,16 +46,45 @@ namespace IptvConverter.Business.Helpers
         {
             foreach (var newChannel in channels)
             {
-                filterOutChannel(newChannel);
+                filterOutExistingChannel(newChannel);
             }
 
-            _channels.AddRange(channels);
+            _channels.AddRange(channels.Where(x => channelHasProgramme(x, programmes) == true));
             _programme.AddRange(programmes);
 
             return this;
         }
 
-        private void filterOutChannel(EpgChannel channelToFilterOut)
+        public bool ExistsProgrammeForChannel(string channelId)
+        {
+
+            var channelsToProcess = _channels.Where(channelsMatchingFunction(channelId)).ToList();
+            if (channelsToProcess == null || channelsToProcess.Count == 0)
+                return false;
+
+            foreach(var c in channelsToProcess)
+            {
+                if (channelHasProgramme(c, _programme))
+                    return true;
+            }
+
+            return false;
+        }
+
+        private static bool channelHasProgramme(EpgChannel channel, List<EpgProgramme> programmes)
+        {
+            var zagrebToday = DateTimeUtils.GetZagrebCurrentDateTime();
+            var existingProgramme = programmes
+                .Where(x => x.ChannelId == channel.ChannelEpgId && x.StartDate.Date == zagrebToday.Date)
+                .ToList();
+
+            if (existingProgramme != null && existingProgramme.Count > 5)
+                return true;
+
+            return false;
+        }
+
+        private void filterOutExistingChannel(EpgChannel channelToFilterOut)
         {
             var existingChannel = _channels.Where(channelsMatchingFunction(channelToFilterOut.ChannelEpgId)).ToList();
             if (existingChannel == null || existingChannel.Count == 0)
