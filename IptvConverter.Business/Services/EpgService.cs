@@ -104,54 +104,68 @@ namespace IptvConverter.Business.Services
 
                 #region mojtv.net xmltv
                 var sk3Epg = await FetchXmlEpg($"https://mojtv.net/xmltv/service.ashx?kanal_id=401&date={zagrebTime.ToString("d.M.yyyy.")}");
-                epgXml.AddChannel(sk3Epg.Channels.First(), sk3Epg.Programe);
                 var sk3EpgTom = await FetchXmlEpg($"https://mojtv.net/xmltv/service.ashx?kanal_id=401&date={zagrebTime.AddDays(1).ToString("d.M.yyyy.")}");
-                epgXml.AddChannel(sk3EpgTom.Channels.First(), sk3EpgTom.Programe);
+                var fullProgramme = new List<EpgProgramme>();
+                fullProgramme.AddRange(sk3Epg.Programe);
+                fullProgramme.AddRange(sk3EpgTom.Programe);
+                epgXml.AddChannel(sk3EpgTom.Channels.First(), fullProgramme);
                 epgXml.ChangeEpgIdForChannel("sk3.rs", "SportKlub 3");
                 epgXml.AddHoursToProgrammeTimeForChannel("SportKlub 3", 1);
 
 
                 var sk2Epg = await FetchXmlEpg($"https://mojtv.net/xmltv/service.ashx?kanal_id=400&date={zagrebTime.ToString("d.M.yyyy.")}");
-                epgXml.AddChannel(sk2Epg.Channels.First(), sk2Epg.Programe);
                 var sk2EpgTom = await FetchXmlEpg($"https://mojtv.net/xmltv/service.ashx?kanal_id=400&date={zagrebTime.AddDays(1).ToString("d.M.yyyy.")}");
-                epgXml.AddChannel(sk2EpgTom.Channels.First(), sk2EpgTom.Programe);
+                fullProgramme = new List<EpgProgramme>();
+                fullProgramme.AddRange(sk2Epg.Programe);
+                fullProgramme.AddRange(sk2EpgTom.Programe);
+                epgXml.AddChannel(sk2EpgTom.Channels.First(), fullProgramme);
                 epgXml.ChangeEpgIdForChannel("sk2.rs", "SportKlub 2");
                 epgXml.AddHoursToProgrammeTimeForChannel("SportKlub 2", 1);
 
                 var sk1Epg = await FetchXmlEpg($"https://mojtv.net/xmltv/service.ashx?kanal_id=399&date={zagrebTime.ToString("d.M.yyyy.")}");
-                epgXml.AddChannel(sk1Epg.Channels.First(), sk1Epg.Programe);
                 var sk1EpgTom = await FetchXmlEpg($"https://mojtv.net/xmltv/service.ashx?kanal_id=399&date={zagrebTime.AddDays(1).ToString("d.M.yyyy.")}");
-                epgXml.AddChannel(sk1EpgTom.Channels.First(), sk1EpgTom.Programe);
+                fullProgramme = new List<EpgProgramme>();
+                fullProgramme.AddRange(sk1Epg.Programe);
+                fullProgramme.AddRange(sk1EpgTom.Programe);
+                epgXml.AddChannel(sk1EpgTom.Channels.First(), fullProgramme);
                 epgXml.ChangeEpgIdForChannel("sk1.rs", "SportKlub 1");
                 epgXml.AddHoursToProgrammeTimeForChannel("SportKlub 1", 1);
 
                 var foodN = await FetchXmlEpg($"https://mojtv.net/xmltv/service.ashx?kanal_id=265&date={zagrebTime.ToString("d.M.yyyy.")}");
-                epgXml.AddChannel(foodN.Channels.First(), foodN.Programe);
                 var foodNTom = await FetchXmlEpg($"https://mojtv.net/xmltv/service.ashx?kanal_id=265&date={zagrebTime.AddDays(1).ToString("d.M.yyyy.")}");
-                epgXml.AddChannel(foodNTom.Channels.First(), foodNTom.Programe);
+                fullProgramme = new List<EpgProgramme>();
+                fullProgramme.AddRange(foodN.Programe);
+                fullProgramme.AddRange(foodNTom.Programe);
+                epgXml.AddChannel(foodNTom.Channels.First(), fullProgramme);
 
-                if(!epgXml.ExistsProgrammeForChannel("HBO"))
+                if (!epgXml.ExistsProgrammeForChannel("HBO"))
                 {
                     var hbo1 = await FetchXmlEpg($"https://mojtv.net/xmltv/service.ashx?kanal_id=366&date={zagrebTime.ToString("d.M.yyyy.")}");
-                    epgXml.AddChannel(hbo1.Channels.First(), hbo1.Programe);
                     var hbo1Tom = await FetchXmlEpg($"https://mojtv.net/xmltv/service.ashx?kanal_id=366&date={zagrebTime.AddDays(1).ToString("d.M.yyyy.")}");
-                    epgXml.AddChannel(hbo1Tom.Channels.First(), hbo1Tom.Programe);
+                    fullProgramme = new List<EpgProgramme>();
+                    fullProgramme.AddRange(hbo1.Programe);
+                    fullProgramme.AddRange(hbo1Tom.Programe);
+                    epgXml.AddChannel(hbo1Tom.Channels.First(), fullProgramme);
                 }
 
-                if(!epgXml.ExistsProgrammeForChannel("HBO 2"))
+                if (!epgXml.ExistsProgrammeForChannel("HBO 2"))
                 {
                     var hbo2 = await FetchXmlEpg($"https://mojtv.net/xmltv/service.ashx?kanal_id=367&date={zagrebTime.ToString("d.M.yyyy.")}");
-                    epgXml.AddChannel(hbo2.Channels.First(), hbo2.Programe);
                     var hbo2Tom = await FetchXmlEpg($"https://mojtv.net/xmltv/service.ashx?kanal_id=367&date={zagrebTime.AddDays(1).ToString("d.M.yyyy.")}");
-                    epgXml.AddChannel(hbo2Tom.Channels.First(), hbo2Tom.Programe);
+                    fullProgramme = new List<EpgProgramme>();
+                    fullProgramme.AddRange(hbo2.Programe);
+                    fullProgramme.AddRange(hbo2Tom.Programe);
+                    epgXml.AddChannel(hbo2Tom.Channels.First(), fullProgramme);
                 }
 
-                if(!epgXml.ExistsProgrammeForChannel("HBO 3"))
+                if (!epgXml.ExistsProgrammeForChannel("HBO 3"))
                 {
                     var hbo3 = await FetchXmlEpg($"https://mojtv.net/xmltv/service.ashx?kanal_id=368&date={zagrebTime.ToString("d.M.yyyy.")}");
-                    epgXml.AddChannel(hbo3.Channels.First(), hbo3.Programe);
                     var hbo3Tom = await FetchXmlEpg($"https://mojtv.net/xmltv/service.ashx?kanal_id=368&date={zagrebTime.AddDays(1).ToString("d.M.yyyy.")}");
-                    epgXml.AddChannel(hbo3Tom.Channels.First(), hbo3Tom.Programe);
+                    fullProgramme = new List<EpgProgramme>();
+                    fullProgramme.AddRange(hbo3.Programe);
+                    fullProgramme.AddRange(hbo3Tom.Programe);
+                    epgXml.AddChannel(hbo3Tom.Channels.First(), fullProgramme);
                 }
 
 

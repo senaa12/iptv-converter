@@ -29,11 +29,12 @@ namespace IptvConverter.Business.Helpers
             return new XmlEpg();
         }
 
-        public XmlEpg AddChannel(EpgChannel channel, List<EpgProgramme> programme)
+        public XmlEpg AddChannel(EpgChannel channel, List<EpgProgramme> programme, bool filterOutExisting = true, bool checkForToday = true)
         {
-            filterOutExistingChannel(channel);
+            if(filterOutExisting) 
+                filterOutExistingChannel(channel);
 
-            if (!channelHasProgramme(channel, programme))
+            if (checkForToday == true && !channelHasProgramme(channel, programme))
                 return this;
 
             _channels.Add(channel);
@@ -42,14 +43,17 @@ namespace IptvConverter.Business.Helpers
             return this;
         }
 
-        public XmlEpg AddChannels(List<EpgChannel> channels, List<EpgProgramme> programmes)
+        public XmlEpg AddChannels(List<EpgChannel> channels, List<EpgProgramme> programmes, bool filterOutExisting = true, bool checkForToday = true)
         {
-            foreach (var newChannel in channels)
+            if(filterOutExisting)
             {
-                filterOutExistingChannel(newChannel);
+                foreach (var newChannel in channels)
+                {
+                    filterOutExistingChannel(newChannel);
+                }
             }
 
-            _channels.AddRange(channels.Where(x => channelHasProgramme(x, programmes) == true));
+            _channels.AddRange(channels.Where(x => (checkForToday == true && channelHasProgramme(x, programmes) == true) || checkForToday == false));
             _programme.AddRange(programmes);
 
             return this;
