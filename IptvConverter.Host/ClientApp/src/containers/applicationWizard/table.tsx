@@ -4,10 +4,10 @@ import {
   SortableElement,
   SortableHandle
 } from "react-sortable-hoc";
-import Checkbox from '../components/checkbox/checkbox';
-import Input from '../components/input/input';
-import Icon, { IconEnum } from '../components/icon';
-import { arrayMove } from '../utilities/functions';
+import Checkbox from '../../components/checkbox/checkbox';
+import Input from '../../components/input/input';
+import Icon, { IconEnum } from '../../components/icon';
+import { arrayMove } from '../../utilities/functions';
 
 const SortableCont = SortableContainer(({ children }) => <tbody>{children}</tbody>);
 

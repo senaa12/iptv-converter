@@ -560,7 +560,7 @@
   },
   {
     "ID": 57,
-    "EpgId": "RTS 1",
+    "EpgId": "RTS 1 HD",
     "Name": "RTS 1",
     "Pattern": "RTS 1 RS SR SRB",
     "Group": "Generic",
@@ -570,7 +570,7 @@
   },
   {
     "ID": 58,
-    "EpgId": "RTS 2",
+    "EpgId": "RTS 2 HD",
     "Name": "RTS 2",
     "Pattern": "RTS 2 RS SR SRB",
     "Group": "Generic",
@@ -707,6 +707,36 @@
     "Logo": "https://i.imgur.com/iNSGyTV.png",
     "ShouldCollect": true,
     "Country": "hr"
+  },
+  {
+    "ID": 72,
+    "EpgId": "BHT",
+    "Name": "BHT 1",
+    "Pattern": "BHT 1 BIH",
+    "Group": "Sport",
+    "Logo": "https://imgur.com/a/UWogl4u",
+    "ShouldCollect": true,
+    "Country": "bih"
+  },
+  {
+    "ID": 73,
+    "EpgId": "RTCG 1",
+    "Name": "RTCG 1",
+    "Pattern": "RTCG 1 CG",
+    "Group": "Sport",
+    "Logo": "https://imgur.com/2aFkX1P",
+    "ShouldCollect": true,
+    "Country": "cg"
+  },
+  {
+    "ID": 74,
+    "EpgId": "RTCG 2",
+    "Name": "RTCG 2",
+    "Pattern": "RTCG 2 CG",
+    "Group": "Sport",
+    "Logo": "https://imgur.com/7eqj8UL",
+    "ShouldCollect": true,
+    "Country": "cg"
   },
   {
     "ID": -1,

@@ -14,6 +14,6 @@ namespace IptvConverter.Business.Services.Interfaces
 
         Task<XmlEpgParser> FetchEpgGzip(string url);
 
-        Task GenerateXmlEpgFile();
+        Task GenerateXmlEpgFile(bool overrideExisting = false);
     }
 }

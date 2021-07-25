@@ -1,0 +1,25 @@
+{
+    "name": "IPTV Converter",
+    "short_name": "IPTV Converter",
+    "start_url": "index.html",
+    "icons": [
+        {
+            "src": "images/television512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        },
+        {
+            "src": "images/television192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "images/television144.png",
+            "sizes": "144x144",
+            "type": "image/png"
+        }
+    ],
+    "background_color": "#3E4EB8",
+    "display": "standalone",
+    "theme_color": "#1e3990"
+   }

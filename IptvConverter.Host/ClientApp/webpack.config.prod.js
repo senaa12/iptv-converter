@@ -35,6 +35,7 @@ module.exports = {
         plugins.htmlWebpackPlugin,
         plugins.definePluginProd,
         plugins.hashedModulePlugin,
-        plugins.miniCssPlugin
+        plugins.miniCssPlugin,
+        plugins.copyWebpackPlugin
     ],
 }

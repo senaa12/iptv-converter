@@ -26,70 +26,11 @@ namespace IptvConverter.Business.Services
             _httpClientFactory = httpClientFactory;
         }
 
-        public async Task<List<EpgChannelExtended>> GetEpgServiceChannels(string serviceUrl, bool fillCustomData = true)
+        #region MAIN GENERATION
+        public async Task GenerateXmlEpgFile(bool overrideExisting = false)
         {
-            var request = new HttpRequestMessage(HttpMethod.Get, serviceUrl);
-
-            var client = _httpClientFactory.CreateClient();
-            var response = await client.SendAsync(request);
-
-            var list = new XmlEpgParser(await response.Content.ReadAsStreamAsync()).Channels;
-            if(!fillCustomData)
-            {
-                return list.Select(x => new EpgChannelExtended(x, null)).ToList();
-            }
-
-            return list.Select(x =>
-            {
-                var match = Config.ChannelsConfig.Instance.MatchChannelByName(x.Name);
-                return new EpgChannelExtended(x, match?.ID);
-            }).OrderBy(x => x.ChannelId).ThenBy(x => x.Name).ToList();
-        }
-
-        public async Task<List<EpgChannelExtended>> GetEpgServiceChannelsFromFile(IFormFile file, bool fillCustomData = true)
-        {
-            var list = new XmlEpgParser(file.OpenReadStream()).Channels;
-
-            if (!fillCustomData)
-            {
-                return list.Select(x => new EpgChannelExtended(x, null)).ToList();
-            }
-
-            return list.Select(x =>
-            {
-                var match = Config.ChannelsConfig.Instance.MatchChannelByName(x.Name);
-                return new EpgChannelExtended(x, match?.ID);
-            }).OrderBy(x => x.ChannelId).ThenBy(x => x.Name).ToList();
-
-        }
-
-        public async Task<XmlEpgParser> FetchEpgGzip(string url)
-        {
-            var request = new HttpRequestMessage(HttpMethod.Get, url);
-
-            var client = _httpClientFactory.CreateClient();
-            var response = await client.SendAsync(request);
-
-            using (GZipStream decompressionStream = new GZipStream(await response.Content.ReadAsStreamAsync(), CompressionMode.Decompress))
-            {
-                return new XmlEpgParser(decompressionStream);
-            }
-        }
-
-        public async Task<XmlEpgParser> FetchXmlEpg(string url)
-        {
-            var request = new HttpRequestMessage(HttpMethod.Get, url);
-
-            var client = _httpClientFactory.CreateClient();
-            var response = await client.SendAsync(request);
-
-            return new XmlEpgParser(await response.Content.ReadAsStreamAsync());
-        }
-
-        public async Task GenerateXmlEpgFile()
-        {
-            //if (!shouldGenerateEpg())
-            //    return;
+            if (overrideExisting || !shouldGenerateEpg())
+                return;
 
             var zagrebTime = DateTimeUtils.GetZagrebCurrentDateTime();
             using (FileStream fileStream = File.Create(Path.Combine(_uploadFolder, "guide.xml")))
@@ -99,6 +40,22 @@ namespace IptvConverter.Business.Services
                 #region phoenix rebornbuild
                 var phoenixEpg = await FetchEpgGzip("https://epg.phoenixrebornbuild.com.hr/");
                 epgXml.AddChannels(phoenixEpg.Channels, phoenixEpg.Programe);
+
+                #endregion
+
+                #region serbian forum
+                var serbianForum = await FetchEpgGzip("http://epg.serbianforum.org/losmij/epg.xml.gz");
+                var configChannel = Config.ChannelsConfig.Instance.MatchChannelByName("RTS 1");
+                var rts1 = serbianForum.Channels.FirstOrDefault(x => string.Equals(x.ChannelEpgId, configChannel.EpgId, StringComparison.OrdinalIgnoreCase));
+                epgXml.AddChannel(rts1, serbianForum.GetProgrammeForChannel(rts1.ChannelEpgId));
+
+                configChannel = Config.ChannelsConfig.Instance.MatchChannelByName("RTS 2");
+                var rts2 = serbianForum.Channels.FirstOrDefault(x => string.Equals(x.ChannelEpgId, configChannel.EpgId, StringComparison.OrdinalIgnoreCase));
+                epgXml.AddChannel(rts2, serbianForum.GetProgrammeForChannel(rts2.ChannelEpgId));
+
+                configChannel = Config.ChannelsConfig.Instance.MatchChannelByName("BHT 1");
+                var bht1 = serbianForum.Channels.FirstOrDefault(x => string.Equals(x.ChannelEpgId, configChannel.EpgId, StringComparison.OrdinalIgnoreCase));
+                epgXml.AddChannel(bht1, serbianForum.GetProgrammeForChannel(bht1.ChannelEpgId));
 
                 #endregion
 
@@ -198,6 +155,74 @@ namespace IptvConverter.Business.Services
 
             writeLastGeneratedDateTime();
         }
+
+        #endregion
+
+        #region FETCHER FUNCTIONS
+        public async Task<XmlEpgParser> FetchEpgGzip(string url)
+        {
+            var request = new HttpRequestMessage(HttpMethod.Get, url);
+
+            var client = _httpClientFactory.CreateClient();
+            var response = await client.SendAsync(request);
+
+            using (GZipStream decompressionStream = new GZipStream(await response.Content.ReadAsStreamAsync(), CompressionMode.Decompress))
+            {
+                return new XmlEpgParser(decompressionStream);
+            }
+        }
+
+        public async Task<XmlEpgParser> FetchXmlEpg(string url)
+        {
+            var request = new HttpRequestMessage(HttpMethod.Get, url);
+
+            var client = _httpClientFactory.CreateClient();
+            var response = await client.SendAsync(request);
+
+            return new XmlEpgParser(await response.Content.ReadAsStreamAsync());
+        }
+
+        #endregion
+
+        #region Chanell Readers
+        public async Task<List<EpgChannelExtended>> GetEpgServiceChannels(string serviceUrl, bool fillCustomData = true)
+        {
+            var request = new HttpRequestMessage(HttpMethod.Get, serviceUrl);
+
+            var client = _httpClientFactory.CreateClient();
+            var response = await client.SendAsync(request);
+
+            var list = new XmlEpgParser(await response.Content.ReadAsStreamAsync()).Channels;
+            if(!fillCustomData)
+            {
+                return list.Select(x => new EpgChannelExtended(x, null)).ToList();
+            }
+
+            return list.Select(x =>
+            {
+                var match = Config.ChannelsConfig.Instance.MatchChannelByName(x.Name);
+                return new EpgChannelExtended(x, match?.ID);
+            }).OrderBy(x => x.ChannelId).ThenBy(x => x.Name).ToList();
+        }
+
+        public async Task<List<EpgChannelExtended>> GetEpgServiceChannelsFromFile(IFormFile file, bool fillCustomData = true)
+        {
+            var list = new XmlEpgParser(file.OpenReadStream()).Channels;
+
+            if (!fillCustomData)
+            {
+                return list.Select(x => new EpgChannelExtended(x, null)).ToList();
+            }
+
+            return list.Select(x =>
+            {
+                var match = Config.ChannelsConfig.Instance.MatchChannelByName(x.Name);
+                return new EpgChannelExtended(x, match?.ID);
+            }).OrderBy(x => x.ChannelId).ThenBy(x => x.Name).ToList();
+
+        }
+
+        #endregion
 
         private bool shouldGenerateEpg()
         {
