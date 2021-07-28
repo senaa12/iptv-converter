@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.IO;
 using Newtonsoft.Json;
+using System;
 
 namespace IptvConverter.Host.Controllers
 {
@@ -30,7 +31,7 @@ namespace IptvConverter.Host.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("epg/generate")]
-        public async Task<IActionResult> GeneratePhoenix(bool overrideExisting = false)
+        public async Task<IActionResult> GenerateEpg(bool overrideExisting = false)
         {
             await _epgService.GenerateXmlEpgFile(overrideExisting);
             return Ok();
@@ -84,6 +85,19 @@ namespace IptvConverter.Host.Controllers
         public async Task<IActionResult> ReadEpgChannelsFromFile(IFormFile formFile, bool fillData = true)
         {
             return Ok(AjaxResponse<List<EpgChannelExtended>>.Success(await _epgService.GetEpgServiceChannelsFromFile(formFile, fillData)));
+        }
+
+        /// <summary>
+        /// returns ISO string from epg last generation time
+        /// </summary>
+        /// <returns></returns>
+        [ProducesResponseType(typeof(AjaxResponse<string>), (int)HttpStatusCode.OK)]
+        [HttpGet]
+        [Route("epg/last-generation-time")]
+        public async Task<IActionResult> GetEpgLastGenerationTime()
+        {
+            var lastGenerationTime = await _epgService.GetLastGenerationTime();
+            return Ok(AjaxResponse<string>.Success(lastGenerationTime != null ? ((DateTime)(lastGenerationTime)).ToString("o") : null));
         }
 
         /// <summary>

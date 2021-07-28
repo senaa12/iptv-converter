@@ -6,7 +6,6 @@
       "sourceMap": false,
       "target": "es6",
       "lib": [ "webworker", "es2015" ],
-      "outFile": "../../build/sw.js",
       "types": []
     },
     "compileOnSave": false

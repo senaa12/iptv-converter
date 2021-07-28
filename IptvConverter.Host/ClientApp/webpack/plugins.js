@@ -8,6 +8,7 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const path = require("path");
 
 //#region BASIC 
 exports.htmlWebpackPlugin = new HtmlWebpackPlugin({
@@ -29,9 +30,15 @@ exports.definePluginDev = new webpack.DefinePlugin({
     '__REACT_DEVTOOLS_GLOBAL_HOOK__': '({ isDisabled: true })'
 })
 
-exports.copyWebpackPlugin = new CopyWebpackPlugin({
+exports.copyWebpackPluginBuild = new CopyWebpackPlugin({
   patterns: [
     { from: 'src/public', to: '' }
+  ]
+})
+
+exports.copyWebpackPluginDev = new CopyWebpackPlugin({
+  patterns: [
+    { from: 'src/public', to: path.resolve(__dirname, '../../dist') }
   ]
 })
 

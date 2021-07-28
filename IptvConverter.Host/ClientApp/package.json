@@ -4,9 +4,11 @@
   "description": "basic template",
   "main": "index.js",
   "scripts": {
-    "start": "webpack serve --https --mode development --open  --progress --config ./webpack.config.dev.js",
+    "build-sw-dev": "tsc -b src/serviceWorker/tsconfig.dev.json",
+    "start-app": "webpack serve --https --mode development --open  --progress --config ./webpack.config.dev.js",
+    "start": "npm run build-sw-dev && npm run start-app",
     "build-app": "webpack --config ./webpack.config.prod.js --mode production",
-    "build-sw": "tsc -b src/serviceWorker/tsconfig.json",
+    "build-sw": "tsc -b src/serviceWorker/tsconfig.prod.json",
     "build": "npm run build-app && npm run build-sw",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

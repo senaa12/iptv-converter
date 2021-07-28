@@ -1,4 +1,7 @@
-const VERSION = "1.3";
+// watch out for opened tabs
+// every time you change the version after hard refresh service worker should be installed again
+//if that does not happen than you have it opened in some tab
+const VERSION = "1.10";
 const CACHE_KEY = `iptvconverter-v-${VERSION}`;
 
 // const OFFLINE_PAGE = '/views/offline.html';
@@ -29,24 +32,11 @@ const CACHE_KEY = `iptvconverter-v-${VERSION}`;
 //     response.clone());
 // }
 
-async function registerPeriodicNewsCheck() {
-    const registration = await (navigator as any).serviceWorker.ready;
-    try {
-      await registration.periodicSync.register('get-latest-news', {
-        minInterval: 20*1000 //24 * 60 * 60 * 1000,
-      }); 
-    } catch {
-      console.log('Periodic Sync could not be registered!');
-    }
-  }
-
-
 // starting point
-// As soon as the Service Worker gets registered, it fires the activate event.
+// As soon as the Service Worker gets registered, it fires the activate event. (first time only)
 self.addEventListener('activate', function (event: any) {
-
     console.log('Service Worker v'+VERSION+' activated.')
-    registerPeriodicNewsCheck();
+
     // In order to clear the cache, then update the {VERSION} above:
     // former cache version, if any, will be cleared.
     // Delete all caches that aren't named {CACHE_KEY}    
@@ -64,19 +54,10 @@ self.addEventListener('activate', function (event: any) {
     );
 });
 
-const fetchAndCacheLatestNews = () => {
-    console.log('seny fetch')
-}
-
-self.addEventListener('periodicsync', event => {
-    if ((event as any).tag == 'get-latest-news') {
-      (event as any).waitUntil(fetchAndCacheLatestNews());
-    }
-  });
-
-
 // any = FetchEvent
 const networkFirst = (evt: any) => {
+    console.log(`Hello from service worker ${VERSION}`);
+
     // Network first (refreshes the cache), falling back to cache if offline.
     evt.respondWith(
         caches.match(evt.request)
@@ -107,3 +88,19 @@ const networkFirst = (evt: any) => {
 }
 
 self.addEventListener('fetch', networkFirst);
+
+const getBaseUrl = (): string => {
+    // return "https://localhost:44313";
+    return "https://iptv-converter.azurewebsites.net/";
+}
+
+const generateEpg = async () => {
+    await fetch(`${getBaseUrl()}/api/epg/generate?overrideExisting=true`);
+}
+
+const epgGenerationSyncKey = 'generate-epg';
+self.addEventListener('periodicsync', event => {
+    if ((event as any).tag == epgGenerationSyncKey) {
+      (event as any).waitUntil(generateEpg());
+    }
+  });

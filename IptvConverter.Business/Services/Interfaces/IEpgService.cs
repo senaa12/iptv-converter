@@ -1,6 +1,7 @@
 ﻿using IptvConverter.Business.Helpers;
 using IptvConverter.Business.Models;
 using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -15,5 +16,7 @@ namespace IptvConverter.Business.Services.Interfaces
         Task<XmlEpgParser> FetchEpgGzip(string url);
 
         Task GenerateXmlEpgFile(bool overrideExisting = false);
+
+        Task<DateTime?> GetLastGenerationTime();
     }
 }

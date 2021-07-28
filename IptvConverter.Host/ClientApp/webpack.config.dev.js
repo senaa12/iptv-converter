@@ -5,17 +5,16 @@ const plugins = require("./webpack/plugins");
 
 // port where application starts; if changing need to change port in Setup.cs
 const webpackDevServerPort = 8008;
-// API address
-const proxyTarget = "https://[::1]:44313";
 
 
 module.exports = {
     mode: "development",
-    entry: path.resolve(__dirname, 'src/index.tsx'),
+    entry: {
+        index: path.resolve(__dirname, 'src/index.tsx')
+    },
     output: {
         path: path.resolve(__dirname, './dist'),
         filename: 'bundle.js',
-        publicPath: '/'
     },
     resolve: {
         extensions: ['.js', '.ts', '.tsx']

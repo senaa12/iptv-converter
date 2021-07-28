@@ -7,7 +7,7 @@
 //----------------------
 // ReSharper disable InconsistentNaming
 
-import { BaseClient } from './baseClient';
+import { BaseClient } from "./baseClient";
 
 export class AppClient extends BaseClient {
     private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
@@ -205,6 +205,46 @@ export class AppClient extends BaseClient {
             });
         }
         return Promise.resolve<EpgChannelExtendedListAjaxResponse>(<any>null);
+    }
+
+    /**
+     * returns ISO string from epg last generation time
+     * @return Success
+     */
+    lastGenerationTime(): Promise<StringAjaxResponse> {
+        let url_ = this.baseUrl + "/api/epg/last-generation-time";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ = <RequestInit>{
+            method: "GET",
+            headers: {
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.processLastGenerationTime(_response);
+        });
+    }
+
+    protected processLastGenerationTime(response: Response): Promise<StringAjaxResponse> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = StringAjaxResponse.fromJS(resultData200);
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<StringAjaxResponse>(<any>null);
     }
 
     /**
@@ -456,6 +496,50 @@ export interface IEpgChannelExtendedListAjaxResponse {
     resultType?: AjaxResponseTypeEnum;
     errorMessage?: string | undefined;
     data?: EpgChannelExtended[] | undefined;
+}
+
+export class StringAjaxResponse implements IStringAjaxResponse {
+    resultType?: AjaxResponseTypeEnum;
+    errorMessage?: string | undefined;
+    data?: string | undefined;
+
+    constructor(data?: IStringAjaxResponse) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.resultType = _data["resultType"];
+            this.errorMessage = _data["errorMessage"];
+            this.data = _data["data"];
+        }
+    }
+
+    static fromJS(data: any): StringAjaxResponse {
+        data = typeof data === 'object' ? data : {};
+        let result = new StringAjaxResponse();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["resultType"] = this.resultType;
+        data["errorMessage"] = this.errorMessage;
+        data["data"] = this.data;
+        return data; 
+    }
+}
+
+export interface IStringAjaxResponse {
+    resultType?: AjaxResponseTypeEnum;
+    errorMessage?: string | undefined;
+    data?: string | undefined;
 }
 
 export class IptvChannelExtended implements IIptvChannelExtended {
