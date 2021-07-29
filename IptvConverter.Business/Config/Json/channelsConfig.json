@@ -396,7 +396,8 @@
     "Pattern": "CBS Reality",
     "Group": "Documentary",
     "ShouldCollect": true,
-    "Country": "hr"
+    "Country": "hr",
+    "Logo": "https://i.imgur.com/KHUnzxJ.png"
   },
   {
     "ID": 41,
@@ -714,7 +715,7 @@
     "Name": "BHT 1",
     "Pattern": "BHT 1 BIH",
     "Group": "Sport",
-    "Logo": "https://imgur.com/a/UWogl4u",
+    "Logo": "https://i.imgur.com/dd5bcUg.png",
     "ShouldCollect": true,
     "Country": "bih"
   },
@@ -724,7 +725,7 @@
     "Name": "RTCG 1",
     "Pattern": "RTCG 1 CG",
     "Group": "Sport",
-    "Logo": "https://imgur.com/2aFkX1P",
+    "Logo": "https://i.imgur.com/2aFkX1P.png",
     "ShouldCollect": true,
     "Country": "cg"
   },
@@ -734,7 +735,7 @@
     "Name": "RTCG 2",
     "Pattern": "RTCG 2 CG",
     "Group": "Sport",
-    "Logo": "https://imgur.com/7eqj8UL",
+    "Logo": "https://i.imgur.com/7eqj8UL.png",
     "ShouldCollect": true,
     "Country": "cg"
   },

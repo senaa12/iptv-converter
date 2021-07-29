@@ -1,7 +1,7 @@
 // watch out for opened tabs
 // every time you change the version after hard refresh service worker should be installed again
 //if that does not happen than you have it opened in some tab
-const VERSION = "1.10";
+const VERSION = "1.13";
 const CACHE_KEY = `iptvconverter-v-${VERSION}`;
 
 // const OFFLINE_PAGE = '/views/offline.html';

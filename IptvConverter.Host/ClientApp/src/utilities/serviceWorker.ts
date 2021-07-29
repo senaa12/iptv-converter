@@ -32,10 +32,16 @@ export const getBackgroundSyncPermissionStatus = async() => {
 }
 
 const epgGenerationSyncKey = 'generate-epg';
-const epgGenerationSyncMinInterval = 10*1000; // 6 * 60 * 60 * 1000; // every 6 hours
+const epgGenerationSyncMinInterval = 30*60*1000; // 6 * 60 * 60 * 1000; // every 6 hours
+
+export const removeEpgPeriodicSyncRegistration = async() => {
+  const registration = await navigator.serviceWorker.ready;
+  (registration as any).periodicSync.unregister(epgGenerationSyncKey);
+}
+
 export const generateEpgPeriodicSyncIsRegistered = async() => {
   const registration = await navigator.serviceWorker.ready;
-  const allRegistrations = await (registration as any).periodicSync.getTags();
+  const allRegistrations = await registration.sync.getTags();// .periodicSync.getTags();
   return allRegistrations.includes(epgGenerationSyncKey);
 }
 
@@ -60,7 +66,7 @@ export const registerPeriodicEpgGeneration = async() => {
   }
 
   if(await generateEpgPeriodicSyncIsRegistered()) {
-    return Promise.resolve('Sync already registered');
+    await removeEpgPeriodicSyncRegistration();
   }
 
   try {
