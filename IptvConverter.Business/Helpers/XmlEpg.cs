@@ -82,7 +82,7 @@ namespace IptvConverter.Business.Helpers
                 .Where(x => x.ChannelId == channel.ChannelEpgId && x.StartDate.Date == zagrebToday.Date)
                 .ToList();
 
-            if (existingProgramme != null && existingProgramme.Count > 5)
+            if (existingProgramme != null && existingProgramme.Count > 4)
                 return true;
 
             return false;
@@ -125,7 +125,14 @@ namespace IptvConverter.Business.Helpers
             if (channel == null)
                 return;
 
+            var programmeForChannel = _programme.Where(x => x.ChannelId == channel.ChannelEpgId);
+            foreach(var prog in programmeForChannel)
+            {
+                prog.ChannelId = newValue;
+            }
+
             channel.Name = newValue;
+            channel.ChannelEpgId = newValue;
         }
 
         public bool ChannelExists(string channelId)

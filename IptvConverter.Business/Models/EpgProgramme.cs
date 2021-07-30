@@ -19,7 +19,7 @@ namespace IptvConverter.Business.Models
             }
             set
             {
-                Start = $"{value.ToString("yyyyMMddHHmmss zzz")}";
+                Start = $"{value.ToString("yyyyMMddHHmmss")} {value.ToString("zzzz").Replace(":", "")}";
             }
         }
 
@@ -34,7 +34,7 @@ namespace IptvConverter.Business.Models
             }
             set
             {
-                End = $"{value.ToString("yyyyMMddHHmmss zzz")}";
+                End = $"{value.ToString("yyyyMMddHHmmss")} {value.ToString("zzzz").Replace(":", "")}";
             }
         }
 

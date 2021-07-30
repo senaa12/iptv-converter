@@ -9,13 +9,15 @@ namespace IptvConverter.Business.Services.Interfaces
 {
     public interface IEpgService
     {
-        Task<List<EpgChannelExtended>> GetEpgServiceChannels(string serviceUrl, bool fillCustomData = true);
-
-        Task<List<EpgChannelExtended>> GetEpgServiceChannelsFromFile(IFormFile file, bool fillCustomData = true);
+        Task GenerateXmlEpgFile(bool overrideExisting = false);
 
         Task<XmlEpgParser> FetchEpgGzip(string url);
 
-        Task GenerateXmlEpgFile(bool overrideExisting = false);
+        Task<XmlEpgParser> FetchXmlEpg(string url);
+
+        Task<List<EpgChannelExtended>> GetEpgServiceChannels(string serviceUrl, bool fillCustomData = true);
+
+        Task<List<EpgChannelExtended>> GetEpgServiceChannelsFromFile(IFormFile file, bool fillCustomData = true);
 
         Task<DateTime?> GetLastGenerationTime();
     }

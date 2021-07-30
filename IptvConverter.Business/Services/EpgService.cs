@@ -38,7 +38,12 @@ namespace IptvConverter.Business.Services
                 var epgXml = XmlEpg.Create();
 
                 #region phoenix rebornbuild - BASE
-                var phoenixEpg = await FetchEpgGzip("https://epg.phoenixrebornbuild.com.hr/");
+                var phoenixEpg = await FetchXmlEpg("http://cdn.iptvhr.net/tvdata/guide.xml");
+                if(phoenixEpg.Programe.Count > 15000)
+                {
+                    phoenixEpg = await FetchEpgGzip("https://epg.phoenixrebornbuild.com.hr/");
+                }
+
                 epgXml.AddChannels(phoenixEpg.Channels, phoenixEpg.Programe);
 
                 #endregion
@@ -46,34 +51,58 @@ namespace IptvConverter.Business.Services
                 #region serbian forum
                 var serbianForum = await FetchEpgGzip("http://epg.serbianforum.org/losmij/epg.xml.gz");
                 var configChannel = Config.ChannelsConfig.Instance.MatchChannelByName("RTS 1");
-                var rts1 = serbianForum.Channels.FirstOrDefault(x => string.Equals(x.ChannelEpgId, configChannel.EpgId, StringComparison.OrdinalIgnoreCase));
-                epgXml.AddChannel(rts1, serbianForum.GetProgrammeForChannel(rts1.ChannelEpgId));
+                if (!epgXml.ExistsProgrammeForChannel(configChannel.EpgId))
+                {
+                    var rts1 = serbianForum.Channels.FirstOrDefault(x => string.Equals(x.ChannelEpgId, configChannel.EpgId, StringComparison.OrdinalIgnoreCase));
+                    epgXml.AddChannel(rts1, serbianForum.GetProgrammeForChannel(rts1.ChannelEpgId));
+                }
 
                 configChannel = Config.ChannelsConfig.Instance.MatchChannelByName("RTS 2");
-                var rts2 = serbianForum.Channels.FirstOrDefault(x => string.Equals(x.ChannelEpgId, configChannel.EpgId, StringComparison.OrdinalIgnoreCase));
-                epgXml.AddChannel(rts2, serbianForum.GetProgrammeForChannel(rts2.ChannelEpgId));
+                if (!epgXml.ExistsProgrammeForChannel(configChannel.EpgId))
+                {
+                    var rts2 = serbianForum.Channels.FirstOrDefault(x => string.Equals(x.ChannelEpgId, configChannel.EpgId, StringComparison.OrdinalIgnoreCase));
+                    epgXml.AddChannel(rts2, serbianForum.GetProgrammeForChannel(rts2.ChannelEpgId));
+                }
 
                 configChannel = Config.ChannelsConfig.Instance.MatchChannelByName("BHT 1");
-                var bht1 = serbianForum.Channels.FirstOrDefault(x => string.Equals(x.ChannelEpgId, configChannel.EpgId, StringComparison.OrdinalIgnoreCase));
-                epgXml.AddChannel(bht1, serbianForum.GetProgrammeForChannel(bht1.ChannelEpgId));
+                if (!epgXml.ExistsProgrammeForChannel(configChannel.EpgId))
+                {
+                    var bht1 = serbianForum.Channels.FirstOrDefault(x => string.Equals(x.ChannelEpgId, configChannel.EpgId, StringComparison.OrdinalIgnoreCase));
+                    epgXml.AddChannel(bht1, serbianForum.GetProgrammeForChannel(bht1.ChannelEpgId));
+                }
 
                 #endregion
 
                 #region mojtv.net xmltv
-                var sk1MojTvId = 399;
-                epgXml = await fetchMojTvProgrammeForChannel(sk1MojTvId, epgXml, "SportKlub 1", 1);
+                if (!epgXml.ExistsProgrammeForChannel("SportKlub 1"))
+                {
+                    var sk1MojTvId = 399;
+                    epgXml = await fetchMojTvProgrammeForChannel(sk1MojTvId, epgXml, "SportKlub 1", 1);
+                }
 
-                var sk2MojTvId = 400;
-                epgXml = await fetchMojTvProgrammeForChannel(sk2MojTvId, epgXml, "SportKlub 2", 1);
+                if (!epgXml.ExistsProgrammeForChannel("SportKlub 2"))
+                {
+                    var sk2MojTvId = 400;
+                    epgXml = await fetchMojTvProgrammeForChannel(sk2MojTvId, epgXml, "SportKlub 2", 1);
+                }
 
-                var sk3MojTvId = 401;
-                epgXml = await fetchMojTvProgrammeForChannel(sk3MojTvId, epgXml, "SportKlub 3", 1);
+                if (!epgXml.ExistsProgrammeForChannel("SportKlub 3"))
+                {
+                    var sk3MojTvId = 401;
+                    epgXml = await fetchMojTvProgrammeForChannel(sk3MojTvId, epgXml, "SportKlub 3", 1);
+                }
 
-                var arena6EpgId = 533;
-                epgXml = await fetchMojTvProgrammeForChannel(arena6EpgId, epgXml, "Arena Sport 6");
+                if (!epgXml.ExistsProgrammeForChannel("Arena Sport 6"))
+                {
+                    var arena6EpgId = 533;
+                    epgXml = await fetchMojTvProgrammeForChannel(arena6EpgId, epgXml, "Arena Sport 6");
+                }
 
-                var foodNMojTvId = 265;
-                epgXml = await fetchMojTvProgrammeForChannel(foodNMojTvId, epgXml);
+                if (!epgXml.ExistsProgrammeForChannel("Food Network"))
+                {
+                    var foodNMojTvId = 265;
+                    epgXml = await fetchMojTvProgrammeForChannel(foodNMojTvId, epgXml);
+                }
 
                 if (!epgXml.ExistsProgrammeForChannel("HBO"))
                 {
@@ -154,31 +183,39 @@ namespace IptvConverter.Business.Services
 
         private async Task<XmlEpg> fetchMojTvProgrammeForChannel(int channelId, XmlEpg baseProgrammeAddTo, string newEpgId = null, int? addHoursToProgrammeTime = null)
         {
-            var zagrebTime = DateTimeUtils.GetZagrebCurrentDateTime();
-
-            var todayScheduleTask = FetchXmlEpg($"https://mojtv.net/xmltv/service.ashx?kanal_id={channelId}&date={zagrebTime.ToString("d.M.yyyy.")}");
-            var tommorowScheduleTask = FetchXmlEpg($"https://mojtv.net/xmltv/service.ashx?kanal_id={channelId}&date={zagrebTime.AddDays(1).ToString("d.M.yyyy.")}");
-            await Task.WhenAll(todayScheduleTask, tommorowScheduleTask);
-
-            var fullProgramme = new List<EpgProgramme>();
-            fullProgramme.AddRange(todayScheduleTask.Result.Programe);
-            fullProgramme.AddRange(tommorowScheduleTask.Result.Programe);
-
-            baseProgrammeAddTo.AddChannel(todayScheduleTask.Result.Channels.First(), fullProgramme);
-            if(addHoursToProgrammeTime != null)
+            try
             {
-                baseProgrammeAddTo.AddHoursToProgrammeTimeForChannel(todayScheduleTask.Result.Channels.First().ChannelEpgId, (int)addHoursToProgrammeTime);
-            }
+                var zagrebTime = DateTimeUtils.GetZagrebCurrentDateTime();
 
-            if(!string.IsNullOrEmpty(newEpgId))
+                var todayScheduleTask = FetchXmlEpg($"https://mojtv.net/xmltv/service.ashx?kanal_id={channelId}&date={zagrebTime.ToString("d.M.yyyy.")}");
+                var tommorowScheduleTask = FetchXmlEpg($"https://mojtv.net/xmltv/service.ashx?kanal_id={channelId}&date={zagrebTime.AddDays(1).ToString("d.M.yyyy.")}");
+                await Task.WhenAll(todayScheduleTask, tommorowScheduleTask);
+
+                var fullProgramme = new List<EpgProgramme>();
+
+                fullProgramme.AddRange(todayScheduleTask.Result.Programe);
+                fullProgramme.AddRange(tommorowScheduleTask.Result.Programe);
+
+                baseProgrammeAddTo.AddChannel(todayScheduleTask.Result.Channels.First(), fullProgramme);
+                if (addHoursToProgrammeTime != null)
+                {
+                    baseProgrammeAddTo.AddHoursToProgrammeTimeForChannel(todayScheduleTask.Result.Channels.First().ChannelEpgId, (int)addHoursToProgrammeTime);
+                }
+
+                if (!string.IsNullOrEmpty(newEpgId))
+                {
+                    var oldEpgId = todayScheduleTask.Result.Channels.First().ChannelEpgId;
+                    baseProgrammeAddTo.ChangeEpgIdForChannel(oldEpgId, newEpgId);
+                }
+
+                await Task.Delay(500);
+
+                return baseProgrammeAddTo;
+            }
+            catch
             {
-                var oldEpgId = todayScheduleTask.Result.Channels.First().ChannelEpgId;
-                baseProgrammeAddTo.ChangeEpgIdForChannel(oldEpgId, newEpgId);
+                return baseProgrammeAddTo;
             }
-
-            await Task.Delay(500);
-
-            return baseProgrammeAddTo;
         }
 
         #endregion
@@ -204,21 +241,20 @@ namespace IptvConverter.Business.Services
             }).OrderBy(x => x.ChannelId).ThenBy(x => x.Name).ToList();
         }
 
-        public async Task<List<EpgChannelExtended>> GetEpgServiceChannelsFromFile(IFormFile file, bool fillCustomData = true)
+        public Task<List<EpgChannelExtended>> GetEpgServiceChannelsFromFile(IFormFile file, bool fillCustomData = true)
         {
             var list = new XmlEpgParser(file.OpenReadStream()).Channels;
 
             if (!fillCustomData)
             {
-                return list.Select(x => new EpgChannelExtended(x, null)).ToList();
+                return Task.FromResult(list.Select(x => new EpgChannelExtended(x, null)).ToList());
             }
 
-            return list.Select(x =>
+            return Task.FromResult(list.Select(x =>
             {
                 var match = Config.ChannelsConfig.Instance.MatchChannelByName(x.Name);
                 return new EpgChannelExtended(x, match?.ID);
-            }).OrderBy(x => x.ChannelId).ThenBy(x => x.Name).ToList();
-
+            }).OrderBy(x => x.ChannelId).ThenBy(x => x.Name).ToList());
         }
 
         #endregion
