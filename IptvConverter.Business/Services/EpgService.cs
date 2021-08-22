@@ -74,78 +74,140 @@ namespace IptvConverter.Business.Services
                 #endregion
 
                 #region mojtv.net xmltv
-                if (!epgXml.ExistsProgrammeForChannel("SportKlub 1"))
+                string channelId;
+
+                channelId = "SportKlub 1";
+                if (!epgXml.ExistsProgrammeForChannel(channelId))
                 {
-                    var sk1MojTvId = 399;
-                    epgXml = await fetchMojTvProgrammeForChannel(sk1MojTvId, epgXml, "SportKlub 1", 1);
+                    var mojTvId = 399;
+                    epgXml = await fetchMojTvProgrammeForChannel(mojTvId, epgXml, channelId, 1);
                 }
 
-                if (!epgXml.ExistsProgrammeForChannel("SportKlub 2"))
+                channelId = "SportKlub 2";
+                if (!epgXml.ExistsProgrammeForChannel(channelId))
                 {
-                    var sk2MojTvId = 400;
-                    epgXml = await fetchMojTvProgrammeForChannel(sk2MojTvId, epgXml, "SportKlub 2", 1);
+                    var mojTvId = 400;
+                    epgXml = await fetchMojTvProgrammeForChannel(mojTvId, epgXml, channelId, 1);
                 }
 
-                if (!epgXml.ExistsProgrammeForChannel("SportKlub 3"))
+                channelId = "SportKlub 3";
+                if (!epgXml.ExistsProgrammeForChannel(channelId))
                 {
-                    var sk3MojTvId = 401;
-                    epgXml = await fetchMojTvProgrammeForChannel(sk3MojTvId, epgXml, "SportKlub 3", 1);
+                    var mojTvId = 401;
+                    epgXml = await fetchMojTvProgrammeForChannel(mojTvId, epgXml, channelId, 1);
                 }
 
-                if (!epgXml.ExistsProgrammeForChannel("Arena Sport 6"))
+                channelId = "SportKlub 4";
+                if (!epgXml.ExistsProgrammeForChannel(channelId))
                 {
-                    var arena6EpgId = 533;
-                    epgXml = await fetchMojTvProgrammeForChannel(arena6EpgId, epgXml, "Arena Sport 6");
+                    var mojTvId = 240;
+                    epgXml = await fetchMojTvProgrammeForChannel(mojTvId, epgXml, channelId, 1);
                 }
 
-                if (!epgXml.ExistsProgrammeForChannel("Food Network"))
+                channelId = "SportKlub 5";
+                if (!epgXml.ExistsProgrammeForChannel(channelId))
                 {
-                    var foodNMojTvId = 265;
-                    epgXml = await fetchMojTvProgrammeForChannel(foodNMojTvId, epgXml);
+                    var mojTvId = 241;
+                    epgXml = await fetchMojTvProgrammeForChannel(mojTvId, epgXml, channelId, 1);
                 }
 
-                if (!epgXml.ExistsProgrammeForChannel("HBO"))
+                channelId = "SportKlub 6";
+                if (!epgXml.ExistsProgrammeForChannel(channelId))
                 {
-                    var hboMojTvId = 366;
-                    epgXml = await fetchMojTvProgrammeForChannel(hboMojTvId, epgXml);
+                    var mojTvId = 242;
+                    epgXml = await fetchMojTvProgrammeForChannel(mojTvId, epgXml, channelId, 1);
                 }
 
-                if (!epgXml.ExistsProgrammeForChannel("HBO 2"))
+                channelId = "Arena Sport 6";
+                if (!epgXml.ExistsProgrammeForChannel(channelId))
                 {
-                    var hbo2MojTvId = 367;
-                    epgXml = await fetchMojTvProgrammeForChannel(hbo2MojTvId, epgXml);
+                    var mojTvId = 533;
+                    epgXml = await fetchMojTvProgrammeForChannel(mojTvId, epgXml, channelId);
                 }
 
-                if (!epgXml.ExistsProgrammeForChannel("HBO 3"))
+                channelId = "Food Network";
+                if (!epgXml.ExistsProgrammeForChannel(channelId))
                 {
-                    var hbo3MojTvId = 368;
-                    epgXml = await fetchMojTvProgrammeForChannel(hbo3MojTvId, epgXml);
+                    var mojTvId = 265;
+                    epgXml = await fetchMojTvProgrammeForChannel(mojTvId, epgXml);
                 }
 
-                if (!epgXml.ExistsProgrammeForChannel("EuroSport 1"))
+                channelId = "HBO";
+                if (!epgXml.ExistsProgrammeForChannel(channelId))
                 {
-                    var eurosportMojTvId = 493;
-                    epgXml = await fetchMojTvProgrammeForChannel(eurosportMojTvId, epgXml, "EuroSport 1");
+                    var mojTvId = 366;
+                    epgXml = await fetchMojTvProgrammeForChannel(mojTvId, epgXml);
                 }
 
-                if (!epgXml.ExistsProgrammeForChannel("EuroSport 2"))
+                channelId = "HBO 2";
+                if (!epgXml.ExistsProgrammeForChannel(channelId))
                 {
-                    var eurosport2MojTvId = 494;
-                    epgXml = await fetchMojTvProgrammeForChannel(eurosport2MojTvId, epgXml, "EuroSport 2");
+                    var mojTvId = 367;
+                    epgXml = await fetchMojTvProgrammeForChannel(mojTvId, epgXml);
                 }
 
-                if (!epgXml.ExistsProgrammeForChannel("Jugoton"))
+                channelId = "HBO 3";
+                if (!epgXml.ExistsProgrammeForChannel(channelId))
                 {
-                    var jugotonEpgId = 308;
-                    epgXml = await fetchMojTvProgrammeForChannel(jugotonEpgId, epgXml, "Jugoton");
+                    var mojTvId = 368;
+                    epgXml = await fetchMojTvProgrammeForChannel(mojTvId, epgXml);
                 }
 
-                if (!epgXml.ExistsProgrammeForChannel("National Geographic"))
+                channelId = "EuroSport 1";
+                if (!epgXml.ExistsProgrammeForChannel(channelId))
                 {
-                    var jugotonEpgId = 48;
-                    epgXml = await fetchMojTvProgrammeForChannel(jugotonEpgId, epgXml, "National Geographic");
+                    var mojTvId = 493;
+                    epgXml = await fetchMojTvProgrammeForChannel(mojTvId, epgXml, channelId);
                 }
 
+                channelId = "EuroSport 2";
+                if (!epgXml.ExistsProgrammeForChannel(channelId))
+                {
+                    var mojTvId = 494;
+                    epgXml = await fetchMojTvProgrammeForChannel(mojTvId, epgXml, channelId);
+                }
+
+                channelId = "Jugoton";
+                if (!epgXml.ExistsProgrammeForChannel(channelId))
+                {
+                    var mojTvId = 308;
+                    epgXml = await fetchMojTvProgrammeForChannel(mojTvId, epgXml, channelId);
+                }
+
+                channelId = "National Geographic";
+                if (!epgXml.ExistsProgrammeForChannel(channelId))
+                {
+                    var mojTvId = 48;
+                    epgXml = await fetchMojTvProgrammeForChannel(mojTvId, epgXml, channelId);
+                }
+
+                channelId = "MTV Base";
+                if (!epgXml.ExistsProgrammeForChannel(channelId))
+                {
+                    var mojTvId = 45;
+                    epgXml = await fetchMojTvProgrammeForChannel(mojTvId, epgXml, channelId);
+                }
+
+                channelId = "MTV Hits";
+                if (!epgXml.ExistsProgrammeForChannel(channelId))
+                {
+                    var mojTvId = 46;
+                    epgXml = await fetchMojTvProgrammeForChannel(mojTvId, epgXml, channelId);
+                }
+
+                channelId = "MTV Adria";
+                if (!epgXml.ExistsProgrammeForChannel(channelId))
+                {
+                    var mojTvId = 447;
+                    epgXml = await fetchMojTvProgrammeForChannel(mojTvId, epgXml, channelId);
+                }
+
+                channelId = "VH1 Classic";
+                if (!epgXml.ExistsProgrammeForChannel(channelId))
+                {
+                    var mojTvId = 133;
+                    epgXml = await fetchMojTvProgrammeForChannel(mojTvId, epgXml, channelId);
+                }
                 #endregion
 
                 await fileStream.WriteAsync(epgXml.GenerateEpgFile());
