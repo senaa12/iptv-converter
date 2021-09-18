@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Xml;
 using IptvConverter.Business.Models;
 using IptvConverter.Business.Utils;
@@ -12,44 +11,44 @@ namespace IptvConverter.Business.Helpers
     {
         public XmlEpgParser(Stream stream)
         {
-            try
-            {
-                var result = getProgrammeAndChannels(stream);
-                Programe = result.programme;
-                Channels = result.channels;
-            }
-            catch (Exception ex)
-            {
-                ErrorWhileReading = ex.Message;
-                Programe = new List<EpgProgramme>();
-                Channels = new List<EpgChannel>();
-            }
+            initializeFromStream(stream);
         }
 
-        public string ErrorWhileReading { get; }
+        public string ErrorWhileReading { get; private set; }
 
         public List<EpgProgramme> Programe { get; private set; }
 
         public List<EpgChannel> Channels { get; private set; }
 
-        public List<EpgProgramme> GetProgrammeForChannel(string channelId)
+        public XmlEpg GetXmlEpg()
         {
-            return Programe.Where(x => x.ChannelId.Equals(channelId)).ToList();
+            return XmlEpg.Create((Programe, Channels));
         }
 
+        private void initializeFromStream(Stream stream)
+        {
+            Programe = new List<EpgProgramme>();
+            Channels = new List<EpgChannel>();
+
+            try
+            {
+                readStream(stream);
+            }
+            catch (Exception ex)
+            {
+                ErrorWhileReading = ex.Message;
+            }
+        }
 
         /// <summary>
         /// return whole program from file, only for yesterday, today and tommorow
         /// </summary>
         /// <returns></returns>
-        private (List<EpgProgramme> programme, List<EpgChannel> channels) getProgrammeAndChannels(Stream stream)
+        private void readStream(Stream stream)
         {
             var currentTime = DateTimeUtils.GetZagrebCurrentDateTime();
 
-            var result = new List<EpgProgramme>();
             EpgProgramme _currentItem = null;
-
-            var channelsResult = new List<EpgChannel>();
             EpgChannel _currentChannel = null;
 
             using (var reader = new XmlTextReader(stream))
@@ -168,12 +167,12 @@ namespace IptvConverter.Business.Helpers
                         case XmlNodeType.EndElement:
                             if (reader.Name.Equals("programme") && _currentItem != null)
                             {
-                                result.Add(_currentItem);
+                                Programe.Add(_currentItem);
                                 _currentItem = null;
                             }
                             else if (reader.Name.Equals("channel") && _currentChannel != null)
                             {
-                                channelsResult.Add(_currentChannel);
+                                Channels.Add(_currentChannel);
                                 _currentChannel = null;
                             }
 
@@ -182,7 +181,6 @@ namespace IptvConverter.Business.Helpers
                 }
             }
 
-            return (result, channelsResult);
         }
     }
 }

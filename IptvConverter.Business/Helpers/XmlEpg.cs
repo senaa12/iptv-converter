@@ -1,9 +1,9 @@
-﻿using IptvConverter.Business.Models;
-using IptvConverter.Business.Utils;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using IptvConverter.Business.Models;
+using IptvConverter.Business.Utils;
 
 namespace IptvConverter.Business.Helpers
 {
@@ -17,11 +17,32 @@ namespace IptvConverter.Business.Helpers
             (tester) => (x) => (!string.IsNullOrEmpty(x.ChannelEpgId) && tester.Equals(x.ChannelEpgId, System.StringComparison.OrdinalIgnoreCase))
                 || (!string.IsNullOrEmpty(x.Name) && tester.Equals(x.Name, System.StringComparison.OrdinalIgnoreCase));
 
-
-        private XmlEpg() 
+        public List<EpgProgramme> Programme
         {
-            _programme = new List<EpgProgramme>();
-            _channels = new List<EpgChannel>();
+            get
+            {
+                return _programme;
+            }
+        }
+
+        public List<EpgChannel> Channels
+        {
+            get
+            {
+                return _channels;
+            }
+        }
+
+
+        private XmlEpg(List<EpgProgramme> programmes = null, List<EpgChannel> channels = null)
+        {
+            _programme = programmes ?? new List<EpgProgramme>();
+            _channels = channels ?? new List<EpgChannel>();
+        }
+
+        public static XmlEpg Create((List<EpgProgramme> Programmes, List<EpgChannel> Channels) data)
+        {
+            return new XmlEpg(data.Programmes, data.Channels);
         }
 
         public static XmlEpg Create()
@@ -31,7 +52,7 @@ namespace IptvConverter.Business.Helpers
 
         public XmlEpg AddChannel(EpgChannel channel, List<EpgProgramme> programme, bool filterOutExisting = true, bool checkForToday = true)
         {
-            if(filterOutExisting) 
+            if (filterOutExisting)
                 filterOutExistingChannel(channel);
 
             if (checkForToday == true && !channelHasProgramme(channel, programme))
@@ -45,7 +66,7 @@ namespace IptvConverter.Business.Helpers
 
         public XmlEpg AddChannels(List<EpgChannel> channels, List<EpgProgramme> programmes, bool filterOutExisting = true, bool checkForToday = true)
         {
-            if(filterOutExisting)
+            if (filterOutExisting)
             {
                 foreach (var newChannel in channels)
                 {
@@ -59,6 +80,11 @@ namespace IptvConverter.Business.Helpers
             return this;
         }
 
+        public List<EpgProgramme> GetProgrammeForChannel(string channelId)
+        {
+            return _programme.Where(x => x.ChannelId.Equals(channelId)).ToList();
+        }
+
         public bool ExistsProgrammeForChannel(string channelId)
         {
 
@@ -66,7 +92,7 @@ namespace IptvConverter.Business.Helpers
             if (channelsToProcess == null || channelsToProcess.Count == 0)
                 return false;
 
-            foreach(var c in channelsToProcess)
+            foreach (var c in channelsToProcess)
             {
                 if (channelHasProgramme(c, _programme))
                     return true;
@@ -126,7 +152,7 @@ namespace IptvConverter.Business.Helpers
                 return;
 
             var programmeForChannel = _programme.Where(x => x.ChannelId == channel.ChannelEpgId);
-            foreach(var prog in programmeForChannel)
+            foreach (var prog in programmeForChannel)
             {
                 prog.ChannelId = newValue;
             }
@@ -148,15 +174,15 @@ namespace IptvConverter.Business.Helpers
                 writer.WriteLine("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
                 writer.WriteLine("<tv generator-info-name=\"senny processed epg\" generator-info-url=\"https://iptvconverter.azurewebsites.net\">");
 
-                foreach(var c in _channels.OrderBy(x => x.Name))
+                foreach (var c in _channels.OrderBy(x => x.Name))
                 {
                     writer.Write(c.ToXmlString());
                 }
 
-                _programme.ForEach(c =>
+                foreach (var p in _programme)
                 {
-                    writer.Write(c.ToXmlString());
-                });
+                    writer.Write(p.ToXmlString());
+                }
 
                 writer.WriteLine("</tv>");
             }

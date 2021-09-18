@@ -1,16 +1,16 @@
-﻿using IptvConverter.Business.Helpers;
-using IptvConverter.Business.Models;
-using IptvConverter.Business.Services.Interfaces;
-using IptvConverter.Business.Utils;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using IptvConverter.Business.Helpers;
+using IptvConverter.Business.Models;
+using IptvConverter.Business.Services.Interfaces;
+using IptvConverter.Business.Utils;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 
 namespace IptvConverter.Business.Services
 {
@@ -39,35 +39,35 @@ namespace IptvConverter.Business.Services
 
                 #region phoenix rebornbuild - BASE
                 var phoenixEpg = await FetchXmlEpg("http://cdn.iptvhr.net/tvdata/guide.xml");
-                if(phoenixEpg.Programe.Count > 15000)
+                if (phoenixEpg.Programme.Count > 15000)
                 {
                     phoenixEpg = await FetchEpgGzip("https://epg.phoenixrebornbuild.com.hr/");
                 }
 
-                epgXml.AddChannels(phoenixEpg.Channels, phoenixEpg.Programe);
+                epgXml.AddChannels(phoenixEpg.Channels, phoenixEpg.Programme);
 
                 #endregion
 
                 #region serbian forum
                 var serbianForum = await FetchEpgGzip("http://epg.serbianforum.org/losmij/epg.xml.gz");
                 var configChannel = Config.ChannelsConfig.Instance.MatchChannelByName("RTS 1");
-                if (!epgXml.ExistsProgrammeForChannel(configChannel.EpgId))
+                var rts1 = serbianForum.Channels.FirstOrDefault(x => string.Equals(x.ChannelEpgId, configChannel.EpgId, StringComparison.OrdinalIgnoreCase));
+                if (!epgXml.ExistsProgrammeForChannel(configChannel.EpgId) && rts1 != null)
                 {
-                    var rts1 = serbianForum.Channels.FirstOrDefault(x => string.Equals(x.ChannelEpgId, configChannel.EpgId, StringComparison.OrdinalIgnoreCase));
                     epgXml.AddChannel(rts1, serbianForum.GetProgrammeForChannel(rts1.ChannelEpgId));
                 }
 
                 configChannel = Config.ChannelsConfig.Instance.MatchChannelByName("RTS 2");
-                if (!epgXml.ExistsProgrammeForChannel(configChannel.EpgId))
+                var rts2 = serbianForum.Channels.FirstOrDefault(x => string.Equals(x.ChannelEpgId, configChannel.EpgId, StringComparison.OrdinalIgnoreCase));
+                if (!epgXml.ExistsProgrammeForChannel(configChannel.EpgId) && rts2 != null)
                 {
-                    var rts2 = serbianForum.Channels.FirstOrDefault(x => string.Equals(x.ChannelEpgId, configChannel.EpgId, StringComparison.OrdinalIgnoreCase));
                     epgXml.AddChannel(rts2, serbianForum.GetProgrammeForChannel(rts2.ChannelEpgId));
                 }
 
                 configChannel = Config.ChannelsConfig.Instance.MatchChannelByName("BHT 1");
-                if (!epgXml.ExistsProgrammeForChannel(configChannel.EpgId))
+                var bht1 = serbianForum.Channels.FirstOrDefault(x => string.Equals(x.ChannelEpgId, configChannel.EpgId, StringComparison.OrdinalIgnoreCase));
+                if (!epgXml.ExistsProgrammeForChannel(configChannel.EpgId) && bht1 != null)
                 {
-                    var bht1 = serbianForum.Channels.FirstOrDefault(x => string.Equals(x.ChannelEpgId, configChannel.EpgId, StringComparison.OrdinalIgnoreCase));
                     epgXml.AddChannel(bht1, serbianForum.GetProgrammeForChannel(bht1.ChannelEpgId));
                 }
 
@@ -220,7 +220,7 @@ namespace IptvConverter.Business.Services
         #endregion
 
         #region PROGRAMME FETCHER FUNCTIONS
-        public async Task<XmlEpgParser> FetchEpgGzip(string url)
+        public async Task<XmlEpg> FetchEpgGzip(string url)
         {
             var request = new HttpRequestMessage(HttpMethod.Get, url);
 
@@ -229,18 +229,18 @@ namespace IptvConverter.Business.Services
 
             using (GZipStream decompressionStream = new GZipStream(await response.Content.ReadAsStreamAsync(), CompressionMode.Decompress))
             {
-                return new XmlEpgParser(decompressionStream);
+                return new XmlEpgParser(decompressionStream).GetXmlEpg();
             }
         }
 
-        public async Task<XmlEpgParser> FetchXmlEpg(string url)
+        public async Task<XmlEpg> FetchXmlEpg(string url)
         {
             var request = new HttpRequestMessage(HttpMethod.Get, url);
 
             var client = _httpClientFactory.CreateClient();
             var response = await client.SendAsync(request);
 
-            return new XmlEpgParser(await response.Content.ReadAsStreamAsync());
+            return new XmlEpgParser(await response.Content.ReadAsStreamAsync()).GetXmlEpg();
         }
 
         private async Task<XmlEpg> fetchMojTvProgrammeForChannel(int channelId, XmlEpg baseProgrammeAddTo, string newEpgId = null, int? addHoursToProgrammeTime = null)
@@ -255,8 +255,8 @@ namespace IptvConverter.Business.Services
 
                 var fullProgramme = new List<EpgProgramme>();
 
-                fullProgramme.AddRange(todayScheduleTask.Result.Programe);
-                fullProgramme.AddRange(tommorowScheduleTask.Result.Programe);
+                fullProgramme.AddRange(todayScheduleTask.Result.Programme);
+                fullProgramme.AddRange(tommorowScheduleTask.Result.Programme);
 
                 baseProgrammeAddTo.AddChannel(todayScheduleTask.Result.Channels.First(), fullProgramme);
                 if (addHoursToProgrammeTime != null)
@@ -291,7 +291,7 @@ namespace IptvConverter.Business.Services
             var response = await client.SendAsync(request);
 
             var list = new XmlEpgParser(await response.Content.ReadAsStreamAsync()).Channels;
-            if(!fillCustomData)
+            if (!fillCustomData)
             {
                 return list.Select(x => new EpgChannelExtended(x, null)).ToList();
             }
@@ -324,7 +324,7 @@ namespace IptvConverter.Business.Services
         public async Task<DateTime?> GetLastGenerationTime()
         {
             var lastCheckedPath = Path.Combine(_uploadFolder, "last_checked");
-            if(!File.Exists(lastCheckedPath))
+            if (!File.Exists(lastCheckedPath))
                 return null;
 
             using (StreamReader r = new StreamReader(lastCheckedPath))

@@ -1,9 +1,9 @@
-﻿using IptvConverter.Business.Helpers;
-using IptvConverter.Business.Models;
-using Microsoft.AspNetCore.Http;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using IptvConverter.Business.Helpers;
+using IptvConverter.Business.Models;
+using Microsoft.AspNetCore.Http;
 
 namespace IptvConverter.Business.Services.Interfaces
 {
@@ -11,9 +11,9 @@ namespace IptvConverter.Business.Services.Interfaces
     {
         Task GenerateXmlEpgFile(bool overrideExisting = false);
 
-        Task<XmlEpgParser> FetchEpgGzip(string url);
+        Task<XmlEpg> FetchEpgGzip(string url);
 
-        Task<XmlEpgParser> FetchXmlEpg(string url);
+        Task<XmlEpg> FetchXmlEpg(string url);
 
         Task<List<EpgChannelExtended>> GetEpgServiceChannels(string serviceUrl, bool fillCustomData = true);
 
