@@ -1,10 +1,10 @@
-﻿using IptvConverter.Business.Models;
-using IptvConverter.Business.Utils;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Xml;
+using IptvConverter.Business.Models;
+using IptvConverter.Business.Utils;
 
 namespace IptvConverter.Business.Helpers
 {
@@ -12,13 +12,24 @@ namespace IptvConverter.Business.Helpers
     {
         public XmlEpgParser(Stream stream)
         {
-            var result = getProgrammeAndChannels(stream);
-            Programe = result.programme;
-            Channels = result.channels;
+            try
+            {
+                var result = getProgrammeAndChannels(stream);
+                Programe = result.programme;
+                Channels = result.channels;
+            }
+            catch (Exception ex)
+            {
+                ErrorWhileReading = ex.Message;
+                Programe = new List<EpgProgramme>();
+                Channels = new List<EpgChannel>();
+            }
         }
 
+        public string ErrorWhileReading { get; }
+
         public List<EpgProgramme> Programe { get; private set; }
-       
+
         public List<EpgChannel> Channels { get; private set; }
 
         public List<EpgProgramme> GetProgrammeForChannel(string channelId)
@@ -53,15 +64,15 @@ namespace IptvConverter.Business.Helpers
                                 _currentItem = new EpgProgramme();
                                 while (reader.MoveToNextAttribute())
                                 {
-                                    if(reader.Name.Equals("start"))
+                                    if (reader.Name.Equals("start"))
                                     {
                                         _currentItem.Start = reader.Value;
                                     }
-                                    else if(reader.Name.Equals("stop"))
+                                    else if (reader.Name.Equals("stop"))
                                     {
                                         _currentItem.End = reader.Value;
                                     }
-                                    else if(reader.Name.Equals("channel"))
+                                    else if (reader.Name.Equals("channel"))
                                     {
                                         _currentItem.ChannelId = reader.Value;
                                     }
@@ -86,7 +97,7 @@ namespace IptvConverter.Business.Helpers
                             else if (_currentItem != null && reader.Name.Equals("director"))
                             {
                                 reader.Read();
-                                if(_currentItem.Directors == null)
+                                if (_currentItem.Directors == null)
                                 {
                                     _currentItem.Directors = new List<string>();
                                 }
@@ -115,7 +126,7 @@ namespace IptvConverter.Business.Helpers
                                 reader.Read();
                                 while (reader.MoveToNextAttribute())
                                 {
-                                    if(reader.Name.Equals("src"))
+                                    if (reader.Name.Equals("src"))
                                     {
                                         _currentItem.Icon = reader.Value;
                                     }
@@ -161,10 +172,10 @@ namespace IptvConverter.Business.Helpers
                                 _currentItem = null;
                             }
                             else if (reader.Name.Equals("channel") && _currentChannel != null)
-                                {
-                                    channelsResult.Add(_currentChannel);
-                                    _currentChannel = null;
-                                }
+                            {
+                                channelsResult.Add(_currentChannel);
+                                _currentChannel = null;
+                            }
 
                             break;
                     }
