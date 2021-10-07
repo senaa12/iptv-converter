@@ -87,7 +87,6 @@ namespace IptvConverter.Business.Helpers
 
         public bool ExistsProgrammeForChannel(string channelId)
         {
-
             var channelsToProcess = _channels.Where(channelsMatchingFunction(channelId)).ToList();
             if (channelsToProcess == null || channelsToProcess.Count == 0)
                 return false;
@@ -161,9 +160,10 @@ namespace IptvConverter.Business.Helpers
             channel.ChannelEpgId = newValue;
         }
 
-        public bool ChannelExists(string channelId)
+        public bool ChannelExists(string channelId, out EpgChannel channel)
         {
-            return _channels.Any(channelsMatchingFunction(channelId));
+            channel = _channels.FirstOrDefault(channelsMatchingFunction(channelId));
+            return channel != null;
         }
 
         public byte[] GenerateEpgFile()

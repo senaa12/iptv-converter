@@ -1,16 +1,15 @@
 using System;
+using IptvConverter.Business;
+using IptvConverter.Business.Services;
+using IptvConverter.Host.Middleware;
+using IptvConverter.Host.Swagger;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using IptvConverter.Host.Swagger;
-using IptvConverter.Host.Middleware;
-using IptvConverter.Business;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.FileProviders;
-using System.IO;
-using IptvConverter.Business.Services;
+using Microsoft.Extensions.Hosting;
 
 namespace IptvConverter.Host
 {
