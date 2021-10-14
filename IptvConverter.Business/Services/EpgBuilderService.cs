@@ -134,7 +134,8 @@ namespace IptvConverter.Business.Services
             epgXml.ChangeEpgIdForChannel("HBO", "HBO(src01).hr");
             epgXml.ChangeEpgIdForChannel("HBO 2", "HBO2(src01).hr");
             epgXml.ChangeEpgIdForChannel("HBO 3", "HBO3(src01).hr");
-            // cinemax 1 & 2
+            epgXml.ChangeEpgIdForChannel("Cinemax 1", "CMAX(src01).hr");
+            epgXml.ChangeEpgIdForChannel("Cinemax 2", "CMAX2(src01).hr");
             epgXml.ChangeEpgIdForChannel("Cinestar Premiere 1", "CineStarTVPremiere1(src01).hr");
             epgXml.ChangeEpgIdForChannel("Cinestar Premiere 2", "CineStarTVPremiere2(src01).hr");
             epgXml.ChangeEpgIdForChannel("CineStar TV", "CinestarTV(src01).hr");
